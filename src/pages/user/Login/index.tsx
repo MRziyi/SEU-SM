@@ -5,9 +5,7 @@ import {
   AlipayCircleOutlined,
   LockOutlined,
   MobileOutlined,
-  TaobaoCircleOutlined,
   UserOutlined,
-  WeiboCircleOutlined,
 } from '@ant-design/icons';
 import {
   LoginForm,
@@ -17,7 +15,8 @@ import {
 } from '@ant-design/pro-components';
 import { Alert, message, Tabs } from 'antd';
 import React, { useState } from 'react';
-import { FormattedMessage, history, SelectLang, useIntl, useModel } from 'umi';
+import { FormattedMessage, history, useIntl, useModel } from 'umi';
+// import { SelectLang } from 'umi';
 import styles from './index.less';
 
 const LoginMessage: React.FC<{
@@ -84,13 +83,13 @@ const Login: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.lang} data-lang>
-        {SelectLang && <SelectLang />}
+        {/* {SelectLang && <SelectLang />} */}
       </div>
       <div className={styles.content}>
         <LoginForm
           logo={<img alt="logo" src="/logo.svg" />}
           title="东南大学二手市场"
-          subTitle='SEU-SM是专为东大人服务的校内二手物品交易平台'
+          subTitle='专为东大人服务的校内二手物品交易平台'
           initialValues={{
             autoLogin: true,
           }}
