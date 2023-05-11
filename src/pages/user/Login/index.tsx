@@ -89,10 +89,8 @@ const Login: React.FC = () => {
       <div className={styles.content}>
         <LoginForm
           logo={<img alt="logo" src="/logo.svg" />}
-          title="Ant Design"
-          subTitle={intl.formatMessage({
-            id: 'pages.layouts.userLayout.title',
-          })}
+          title="东南大学二手市场"
+          subTitle='SEU-SM是专为东大人服务的校内二手物品交易平台'
           initialValues={{
             autoLogin: true,
           }}
@@ -103,8 +101,6 @@ const Login: React.FC = () => {
               defaultMessage="其他登录方式"
             />,
             <AlipayCircleOutlined key="AlipayCircleOutlined" className={styles.icon} />,
-            <TaobaoCircleOutlined key="TaobaoCircleOutlined" className={styles.icon} />,
-            <WeiboCircleOutlined key="WeiboCircleOutlined" className={styles.icon} />,
           ]}
           onFinish={async (values) => {
             await handleSubmit(values as API.LoginParams);

@@ -14,10 +14,22 @@
     ],
   },
   {
-    path: '/welcome',
-    name: 'welcome',
-    icon: 'smile',
-    component: './Welcome',
+    path: '/market',
+    name: '市场',
+    icon: 'shoppingCart',
+    component: './Market',
+  },
+  {
+    path: '/center',
+    name: '个人中心',
+    icon: 'user',
+    component: './Center',
+  },
+  {
+    path: '/orders',
+    name: '订单',
+    icon: 'creditCard',
+    component: './Orders',
   },
   {
     path: '/admin',
@@ -44,7 +56,7 @@
   },
   {
     path: '/',
-    redirect: '/welcome',
+    redirect: '/market',
   },
   {
     component: './404',

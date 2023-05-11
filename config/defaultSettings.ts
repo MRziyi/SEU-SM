@@ -12,9 +12,9 @@ const Settings: LayoutSettings & {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'Ant Design Pro',
+  title: '东南大学二手市场',
   pwa: false,
-  logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+  logo: 'https://i.328888.xyz/2023/05/11/iqxMVZ.png',
   iconfontUrl: '',
 };
 

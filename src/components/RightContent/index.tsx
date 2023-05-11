@@ -1,7 +1,8 @@
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Space } from 'antd';
 import React from 'react';
-import { SelectLang, useModel } from 'umi';
+import { useModel } from 'umi';
+//import { SelectLang } from 'umi';
 import HeaderSearch from '../HeaderSearch';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
@@ -49,16 +50,16 @@ const GlobalHeaderRight: React.FC = () => {
         //   console.log('input', value);
         // }}
       />
-      <span
+      {/* <span
         className={styles.action}
         onClick={() => {
           window.open('https://pro.ant.design/docs/getting-started');
         }}
       >
         <QuestionCircleOutlined />
-      </span>
+      </span> */}
       <Avatar />
-      <SelectLang className={styles.action} />
+      {/*<SelectLang className={styles.action} />*/}
     </Space>
   );
 };

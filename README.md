@@ -1,6 +1,6 @@
-# Southeast University Secondary Market (SEU-SM)
+# SEU-SM
 
-the front-end of SEU-SM is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
+the front-end of Southeast University Secondary Market is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
 
 ## Environment Prepare
 
