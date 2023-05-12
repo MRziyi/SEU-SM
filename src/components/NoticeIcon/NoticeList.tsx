@@ -1,6 +1,7 @@
 import { Avatar, List } from 'antd';
-import classNames from 'classnames';
+
 import React from 'react';
+import classNames from 'classnames';
 import styles from './NoticeList.less';
 
 export type NoticeIconTabProps = {
@@ -60,30 +61,30 @@ const NoticeList: React.FC<NoticeIconTabProps> = ({
           ) : null;
 
           return (
-            <div
+            <List.Item
+              className={itemCls}
+              key={item.key || i}
               onClick={() => {
                 onClick?.(item);
               }}
             >
-              <List.Item className={itemCls} key={item.key || i}>
-                <List.Item.Meta
-                  className={styles.meta}
-                  avatar={leftIcon}
-                  title={
-                    <div className={styles.title}>
-                      {item.title}
-                      <div className={styles.extra}>{item.extra}</div>
-                    </div>
-                  }
-                  description={
-                    <div>
-                      <div className={styles.description}>{item.description}</div>
-                      <div className={styles.datetime}>{item.datetime}</div>
-                    </div>
-                  }
-                />
-              </List.Item>
-            </div>
+              <List.Item.Meta
+                className={styles.meta}
+                avatar={leftIcon}
+                title={
+                  <div className={styles.title}>
+                    {item.title}
+                    <div className={styles.extra}>{item.extra}</div>
+                  </div>
+                }
+                description={
+                  <div>
+                    <div className={styles.description}>{item.description}</div>
+                    <div className={styles.datetime}>{item.datetime}</div>
+                  </div>
+                }
+              />
+            </List.Item>
           );
         }}
       />

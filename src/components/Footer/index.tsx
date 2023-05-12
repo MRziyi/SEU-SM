@@ -1,13 +1,15 @@
+// import { useIntl } from 'umi';
 import { GithubOutlined } from '@ant-design/icons';
-import { DefaultFooter } from '@ant-design/pro-components';
-import { useIntl } from 'umi';
+import { DefaultFooter } from '@ant-design/pro-layout';
 
 const Footer: React.FC = () => {
-  const intl = useIntl();
-  const defaultMessage = intl.formatMessage({
-    id: 'app.copyright.producedByUndefined',
-    defaultMessage: '东南大学Undefined小组出品',
-  });
+  //const intl = useIntl();
+  // const defaultMessage = intl.formatMessage({
+  //   id: 'app.copyright.producedByUndefined',
+  //   defaultMessage: '东南大学Undefined小组出品',
+  // });
+
+  const defaultMessage = '东南大学Undefined小组出品';
 
   const currentYear = new Date().getFullYear();
 

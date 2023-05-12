@@ -14,28 +14,17 @@
     ],
   },
   {
-    path: '/market',
-    name: '市场',
-    icon: 'shoppingCart',
-    component: './Market',
-  },
-  {
-    path: '/center',
-    name: '个人中心',
-    icon: 'user',
-    component: './Center',
-  },
-  {
-    path: '/orders',
-    name: '订单',
-    icon: 'creditCard',
-    component: './Orders',
+    path: '/welcome',
+    name: 'welcome',
+    icon: 'smile',
+    component: './Welcome',
   },
   {
     path: '/admin',
     name: 'admin',
     icon: 'crown',
     access: 'canAdmin',
+    component: './Admin',
     routes: [
       {
         path: '/admin/sub-page',
@@ -56,7 +45,7 @@
   },
   {
     path: '/',
-    redirect: '/market',
+    redirect: '/welcome',
   },
   {
     component: './404',

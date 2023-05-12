@@ -1,11 +1,12 @@
-// import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Space } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import React from 'react';
 import { useModel } from 'umi';
-//import { SelectLang } from 'umi';
-import HeaderSearch from '../HeaderSearch';
+// import { SelectLang } from 'umi';
 import Avatar from './AvatarDropdown';
+import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
+import NoticeIconView from '../NoticeIcon';
 
 export type SiderTheme = 'light' | 'dark';
 
@@ -22,6 +23,7 @@ const GlobalHeaderRight: React.FC = () => {
   if ((navTheme === 'dark' && layout === 'top') || layout === 'mix') {
     className = `${styles.right}  ${styles.dark}`;
   }
+
   return (
     <Space className={className}>
       <HeaderSearch
@@ -45,22 +47,23 @@ const GlobalHeaderRight: React.FC = () => {
             label: <a href="https://prolayout.ant.design/">Pro Layout</a>,
             value: 'Pro Layout',
           },
-        ]}
-        // onSearch={value => {
+        ]} // onSearch={value => {
         //   console.log('input', value);
         // }}
       />
-      {/* <span
+      <span
         className={styles.action}
         onClick={() => {
           window.open('https://pro.ant.design/docs/getting-started');
         }}
       >
         <QuestionCircleOutlined />
-      </span> */}
-      <Avatar />
-      {/*<SelectLang className={styles.action} />*/}
+      </span>
+      <NoticeIconView />
+      <Avatar menu />
+      {/* <SelectLang className={styles.action} /> */}
     </Space>
   );
 };
+
 export default GlobalHeaderRight;
