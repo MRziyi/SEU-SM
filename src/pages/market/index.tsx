@@ -1,4 +1,4 @@
-import { Card, Col, Form, List, Row, Select, Typography } from 'antd';
+import { Button, Card, Col, Form, List, Row, Select, Typography } from 'antd';
 import moment from 'moment';
 import type { FC } from 'react';
 import { useRequest } from 'umi';
@@ -10,6 +10,7 @@ import { queryFakeList } from './service';
 import styles from './style.less';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Input } from 'antd';
+import { ShopOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 const FormItem = Form.Item;
@@ -88,14 +89,19 @@ const Projects: FC = () => {
     <div>
       <PageContainer
         content={
-          <div style={{ textAlign: 'center' }}>
-            <Input.Search
-              placeholder="请输入"
-              enterButton="搜索"
-              size="large"
-              onSearch={handleFormSubmit}
-              style={{ maxWidth: 522, width: '100%' }}
-            />
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Button type="primary" icon={<ShopOutlined />} size={'large'}>
+              发布闲置
+            </Button>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Input.Search
+                placeholder="请输入"
+                enterButton="搜索"
+                size="large"
+                onSearch={handleFormSubmit}
+                style={{ maxWidth: 522 }}
+              />
+            </div>
           </div>
         }
       >

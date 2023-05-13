@@ -1,7 +1,6 @@
 // import { useIntl } from 'umi';
 import { GithubOutlined } from '@ant-design/icons';
 import { DefaultFooter } from '@ant-design/pro-layout';
-
 const Footer: React.FC = () => {
   //const intl = useIntl();
   // const defaultMessage = intl.formatMessage({
@@ -10,9 +9,7 @@ const Footer: React.FC = () => {
   // });
 
   const defaultMessage = '东南大学Undefined小组出品';
-
   const currentYear = new Date().getFullYear();
-
   return (
     <DefaultFooter
       copyright={`${currentYear} ${defaultMessage}`}
@@ -33,5 +30,4 @@ const Footer: React.FC = () => {
     />
   );
 };
-
 export default Footer;

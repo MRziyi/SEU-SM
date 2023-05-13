@@ -3,9 +3,7 @@ import { defineConfig } from 'umi';
 import { join } from 'path';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
-
 const { REACT_APP_ENV } = process.env;
-
 export default defineConfig({
   hash: true,
   antd: {},
@@ -19,13 +17,6 @@ export default defineConfig({
     ...defaultSettings,
   },
   // https://umijs.org/zh-CN/plugins/plugin-locale
-  locale: {
-    // default zh-CN
-    default: 'zh-CN',
-    antd: true,
-    // default true, when it is true, will use `navigator.language` overwrite default
-    baseNavigator: true,
-  },
   dynamicImport: {
     loading: '@ant-design/pro-layout/es/PageLoading',
   },
@@ -104,26 +95,26 @@ export default defineConfig({
     {
       path: '/form',
       icon: 'form',
-      name: 'form',
+      name: '表单',
       routes: [
         {
           path: '/form',
           redirect: '/form/basic-form',
         },
         {
-          name: 'basic-form',
+          name: '基础表单',
           icon: 'smile',
           path: '/form/basic-form',
           component: './form/basic-form',
         },
         {
-          name: 'step-form',
+          name: '分步表单',
           icon: 'smile',
           path: '/form/step-form',
           component: './form/step-form',
         },
         {
-          name: 'advanced-form',
+          name: '进阶表单',
           icon: 'smile',
           path: '/form/advanced-form',
           component: './form/advanced-form',
@@ -133,11 +124,11 @@ export default defineConfig({
     {
       path: '/list',
       icon: 'table',
-      name: 'list',
+      name: '列表',
       routes: [
         {
           path: '/list/search',
-          name: 'search-list',
+          name: '列表搜索',
           component: './list/search',
           routes: [
             {
@@ -145,13 +136,13 @@ export default defineConfig({
               redirect: '/list/search/articles',
             },
             {
-              name: 'articles',
+              name: '文章',
               icon: 'smile',
               path: '/list/search/articles',
               component: './list/search/articles',
             },
             {
-              name: 'applications',
+              name: '应用',
               icon: 'smile',
               path: '/list/search/applications',
               component: './list/search/applications',
@@ -163,7 +154,7 @@ export default defineConfig({
           redirect: '/list/table-list',
         },
         {
-          name: 'table-list',
+          name: '表格',
           icon: 'smile',
           path: '/list/table-list',
           component: './list/table-list',
@@ -184,7 +175,7 @@ export default defineConfig({
     },
     {
       path: '/profile',
-      name: 'profile',
+      name: '详情',
       icon: 'profile',
       routes: [
         {
@@ -192,13 +183,13 @@ export default defineConfig({
           redirect: '/profile/basic',
         },
         {
-          name: 'basic',
+          name: '基础',
           icon: 'smile',
           path: '/profile/basic',
           component: './profile/basic',
         },
         {
-          name: 'advanced',
+          name: '进阶',
           icon: 'smile',
           path: '/profile/advanced',
           component: './profile/advanced',
@@ -206,7 +197,7 @@ export default defineConfig({
       ],
     },
     {
-      name: 'account',
+      name: '个人',
       icon: 'user',
       path: '/account',
       routes: [
@@ -215,13 +206,13 @@ export default defineConfig({
           redirect: '/account/center',
         },
         {
-          name: 'center',
+          name: '个人中心',
           icon: 'smile',
           path: '/account/center',
           component: './account/center',
         },
         {
-          name: 'settings',
+          name: '个人设置',
           icon: 'smile',
           path: '/account/settings',
           component: './account/settings',
