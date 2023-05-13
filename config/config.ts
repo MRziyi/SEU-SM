@@ -246,12 +246,7 @@ export default defineConfig({
   esbuild: {},
   title: false,
   ignoreMomentLocale: true,
-  proxy: {
-    '/api/': {
-      target: 'http://123.60.24.195',
-      changeOrigin: true,
-    },
-  },
+  proxy: proxy[REACT_APP_ENV || 'dev'],
   manifest: {
     basePath: '/',
   },
