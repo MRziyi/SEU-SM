@@ -128,7 +128,7 @@ const Login: React.FC = () => {
             style={{
               marginBottom: 24,
             }}
-          ></div>
+           />
         </LoginForm>
       </div>
       <Footer />
