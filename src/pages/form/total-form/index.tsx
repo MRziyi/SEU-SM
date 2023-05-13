@@ -1,7 +1,15 @@
-import { PlusOutlined } from '@ant-design/icons';
+import {
+  AlipayCircleOutlined,
+  LockOutlined,
+  PlusOutlined,
+  TaobaoCircleOutlined,
+  UserOutlined,
+  WeiboCircleOutlined,
+} from '@ant-design/icons';
 import {
   DrawerForm,
   LightFilter,
+  LoginForm,
   ModalForm,
   ProForm,
   ProFormDateRangePicker,
@@ -11,8 +19,16 @@ import {
   QueryFilter,
   StepsForm,
 } from '@ant-design/pro-form';
-import { Button, message } from 'antd';
+import { Button, message, Space } from 'antd';
 import { useState } from 'react';
+
+const iconStyles = {
+  marginInlineStart: '16px',
+  color: 'rgba(0, 0, 0, 0.2)',
+  fontSize: '24px',
+  verticalAlign: 'middle',
+  cursor: 'pointer',
+};
 
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -31,6 +47,7 @@ export default () => {
     QueryFilter,
     LightFilter,
     StepsForm,
+    LoginForm,
   };
 
   if (type === 'StepsForm') {
@@ -143,6 +160,74 @@ export default () => {
 
   const FormComponents = Components[type];
 
+  if (type === 'LoginForm') {
+    return (
+      <>
+        {' '}
+        <ProFormRadio.Group
+          style={{
+            margin: 16,
+          }}
+          radioType="button"
+          fieldProps={{
+            value: type,
+            onChange: (e) => setType(e.target.value),
+          }}
+          options={[
+            'LightFilter',
+            'ProForm',
+            'ModalForm',
+            'DrawerForm',
+            'QueryFilter',
+            'StepsForm',
+            'LoginForm',
+          ]}
+        />
+        <FormComponents
+          title="Github"
+          subTitle="全球最大的代码托管平台"
+          actions={
+            <Space>
+              其他登录方式
+              <AlipayCircleOutlined style={iconStyles} />
+              <TaobaoCircleOutlined style={iconStyles} />
+              <WeiboCircleOutlined style={iconStyles} />
+            </Space>
+          }
+        >
+          <ProFormText
+            name="username"
+            fieldProps={{
+              size: 'large',
+              prefix: <UserOutlined className={'prefixIcon'} />,
+            }}
+            placeholder={'用户名: admin or user'}
+            rules={[
+              {
+                required: true,
+                message: '请输入用户名!',
+              },
+            ]}
+          />
+          <ProFormText.Password
+            name="password"
+            fieldProps={{
+              size: 'large',
+              prefix: <LockOutlined className={'prefixIcon'} />,
+            }}
+            placeholder={'密码: ant.design'}
+            rules={[
+              {
+                required: true,
+                message: '请输入密码！',
+              },
+            ]}
+          />
+        </FormComponents>
+      </>
+    );
+  }
+
   return (
     <>
       <ProFormRadio.Group
@@ -154,7 +239,15 @@ export default () => {
           value: type,
           onChange: (e) => setType(e.target.value),
         }}
-        options={['LightFilter', 'ProForm', 'ModalForm', 'DrawerForm', 'QueryFilter', 'StepsForm']}
+        options={[
+          'LightFilter',
+          'ProForm',
+          'ModalForm',
+          'DrawerForm',
+          'QueryFilter',
+          'StepsForm',
+          'LoginForm',
+        ]}
       />
       <div
         style={{
