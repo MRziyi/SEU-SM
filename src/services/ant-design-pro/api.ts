@@ -22,7 +22,9 @@ export async function outLogin(options?: { [key: string]: any }) {
 
 /** 登录接口 POST /api/user/login */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request<API.LoginResult>('/api/user/login', {
+  const response = await request<{
+    data: API.LoginResult;
+  }>('/api/user/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -30,6 +32,7 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
     data: body,
     ...(options || {}),
   });
+  return response.data;
 }
 
 /** 此处后端没有提供注释 GET /api/notices */

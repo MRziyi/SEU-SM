@@ -119,6 +119,12 @@ export default defineConfig({
           path: '/form/advanced-form',
           component: './form/advanced-form',
         },
+        {
+          name: '总体表单预览',
+          icon: 'smile',
+          path: '/form/total-form',
+          component: './form/total-form',
+        },
       ],
     },
     {
@@ -160,13 +166,13 @@ export default defineConfig({
           component: './list/table-list',
         },
         {
-          name: 'basic-list',
+          name: '基本列表',
           icon: 'smile',
           path: '/list/basic-list',
           component: './list/basic-list',
         },
         {
-          name: 'card-list',
+          name: '卡片列表',
           icon: 'smile',
           path: '/list/card-list',
           component: './list/card-list',

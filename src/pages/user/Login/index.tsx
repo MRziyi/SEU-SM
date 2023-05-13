@@ -38,8 +38,9 @@ const Login: React.FC = () => {
       // 登录
       const msg = await login({
         ...values,
+        type,
       });
-      if (msg.status === 'ok') {
+      if (msg.status === 1) {
         const defaultLoginSuccessMessage = '登录成功！';
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
@@ -52,7 +53,7 @@ const Login: React.FC = () => {
         history.push(redirect || '/');
         return;
       }
-      console.log(msg);
+      //console.log(msg);
       // 如果失败去设置用户错误信息
       setUserLoginState(msg);
     } catch (error) {
@@ -77,13 +78,13 @@ const Login: React.FC = () => {
             <Tabs.TabPane key="verify" tab={'统一身份验证登录'} />
           </Tabs>
 
-          {status === 'error' && loginType === 'account' && (
+          {status === 0 && loginType === 'account' && (
             <LoginMessage content={'错误的一卡通号和密码'} />
           )}
           {type === 'account' && (
             <>
               <ProFormText
-                name="username"
+                name="userAccount"
                 fieldProps={{
                   size: 'large',
                   prefix: <UserOutlined className={styles.prefixIcon} />,
@@ -97,7 +98,7 @@ const Login: React.FC = () => {
                 ]}
               />
               <ProFormText.Password
-                name="password"
+                name="userPassword"
                 fieldProps={{
                   size: 'large',
                   prefix: <LockOutlined className={styles.prefixIcon} />,
@@ -121,7 +122,7 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {status === 'error' && loginType === 'verify'}
+          {status === 0 && loginType === 'verify'}
           {type === 'verify' && <></>}
           <div
             style={{
