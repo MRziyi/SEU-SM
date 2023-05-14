@@ -32,12 +32,11 @@ export default {
         },
         code: '401',
         description: '请先登录！',
-        success: true,
       });
       return;
     }
     res.send({
-      success: true,
+      code: true,
       data: {
         name: 'Serati Ma',
         avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
@@ -74,10 +73,9 @@ export default {
     if (userPassword === 'ant.design' && userAccount === 'admin') {
       res.send({
         data: {
-          status: 1,
           type,
         },
-        success: true,
+        code: 0,
       });
       access = 'admin';
       return;
@@ -85,26 +83,25 @@ export default {
     if (userPassword === 'ant.design' && userAccount === 'user') {
       res.send({
         data: {
-          status: 1,
           type,
         },
-        success: true,
+        code: 0,
       });
       access = 'user';
       return;
     }
     res.send({
       data: {
-        status: 0,
         type,
       },
-      success: true,
+      code: 100,
+      description: '用户名或密码错误！',
     });
     access = '';
   },
   'POST /api/user/logout': (req: Request, res: Response) => {
     access = '';
-    res.send({ data: {}, success: true });
+    res.send({ data: {}, code: true });
   },
   'GET /api/500': (req: Request, res: Response) => {
     res.status(500).send({

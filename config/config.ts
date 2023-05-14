@@ -2,8 +2,6 @@
 import { defineConfig } from 'umi';
 import { join } from 'path';
 import defaultSettings from './defaultSettings';
-import proxy from './proxy';
-const { REACT_APP_ENV } = process.env;
 export default defineConfig({
   hash: true,
   antd: {},
@@ -246,7 +244,6 @@ export default defineConfig({
   esbuild: {},
   title: false,
   ignoreMomentLocale: true,
-  // proxy: proxy[REACT_APP_ENV || 'dev'],
   proxy: {
     '/api/': {
       target: 'http://123.60.24.195',
