@@ -3,9 +3,6 @@ import { defineConfig } from 'umi';
 import { join } from 'path';
 import defaultSettings from './defaultSettings';
 export default defineConfig({
-  request: {
-    baseURL: 'http://123.60.24.195',
-  },
   hash: true,
   antd: {},
   dva: {
