@@ -2,21 +2,19 @@ import { Button, Card, Col, Form, List, Row, Select, Typography } from 'antd';
 import moment from 'moment';
 import type { FC } from 'react';
 import { useRequest } from 'umi';
-import AvatarList from './components/AvatarList';
 import StandardFormRow from './components/StandardFormRow';
 import TagSelect from './components/TagSelect';
-import type { ListItemDataType } from './data.d';
+import type { ItemData } from './data.d';
 import { queryFakeList } from './service';
 import styles from './style.less';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Input } from 'antd';
 import { ShopOutlined } from '@ant-design/icons';
+import UploadForm from './components/UploadForm/UploadForm';
 
 const { Option } = Select;
 const FormItem = Form.Item;
 const { Paragraph } = Typography;
-
-const getKey = (id: string, index: number) => `${id}-${index}`;
 
 const Projects: FC = () => {
   const { data, loading, run } = useRequest((values: any) => {
@@ -34,8 +32,8 @@ const Projects: FC = () => {
   const list = data?.list || [];
 
   const cardList = list && (
-    <List<ListItemDataType>
-      rowKey="id"
+    <List<ItemData>
+      rowKey="itemId"
       loading={loading}
       grid={{
         gutter: 16,
@@ -49,27 +47,26 @@ const Projects: FC = () => {
       dataSource={list}
       renderItem={(item) => (
         <List.Item>
-          <Card className={styles.card} hoverable cover={<img alt={item.title} src={item.cover} />}>
+          <Card
+            className={styles.card}
+            hoverable
+            cover={<img alt={item.itemName} src={item.imgUrl} />}
+          >
             <Card.Meta
-              title={<a>{item.title}</a>}
+              title={<a>{item.itemName}</a>}
               description={
                 <Paragraph className={styles.item} ellipsis={{ rows: 2 }}>
-                  {item.subDescription}
+                  {item.description}
                 </Paragraph>
               }
             />
             <div className={styles.cardItemContent}>
-              <span>{moment(item.updatedAt).fromNow()}</span>
+              <span>{moment(item.uploadedTime).fromNow()}</span>
               <div className={styles.avatarList}>
-                <AvatarList size="small">
-                  {item.members.map((member, i) => (
-                    <AvatarList.Item
-                      key={getKey(item.id, i)}
-                      src={member.avatar}
-                      tips={member.name}
-                    />
-                  ))}
-                </AvatarList>
+                <Paragraph className={styles.item} ellipsis={{ rows: 1 }}>
+                  {item.ownerAvatarUrl}
+                </Paragraph>
+                {item.ownerName}
               </div>
             </div>
           </Card>
@@ -90,9 +87,13 @@ const Projects: FC = () => {
       <PageContainer
         content={
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Button type="primary" icon={<ShopOutlined />} size={'large'}>
-              发布闲置
-            </Button>
+            <UploadForm
+              btn={
+                <Button type="primary" icon={<ShopOutlined />} size={'large'}>
+                  发布闲置
+                </Button>
+              }
+            ></UploadForm>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Input.Search
                 placeholder="请输入"

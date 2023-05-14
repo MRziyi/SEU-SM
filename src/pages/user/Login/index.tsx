@@ -40,7 +40,7 @@ const Login: React.FC = () => {
         ...values,
         type,
       });
-      if (msg.status === 1) {
+      if (msg.data.status === 1) {
         const defaultLoginSuccessMessage = '登录成功！';
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
@@ -53,9 +53,9 @@ const Login: React.FC = () => {
         history.push(redirect || '/');
         return;
       }
-      //console.log(msg);
+      console.log(msg);
       // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
+      setUserLoginState(msg.data);
     } catch (error) {
       const defaultLoginFailureMessage = '登录失败，请重试！';
       message.error(defaultLoginFailureMessage);
@@ -128,7 +128,7 @@ const Login: React.FC = () => {
             style={{
               marginBottom: 24,
             }}
-           />
+          />
         </LoginForm>
       </div>
       <Footer />

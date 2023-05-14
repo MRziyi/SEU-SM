@@ -4,10 +4,10 @@ import React from 'react';
 import moment from 'moment';
 import { queryFakeList } from '../../service';
 import AvatarList from '../AvatarList';
-import type { ListItemDataType } from '../../data.d';
+import type { ListItemDataType } from '../../data';
 import styles from './index.less';
 
-const Projects: React.FC = () => {
+const OrderHistory: React.FC = () => {
   // 获取tab列表数据
   const { data: listData } = useRequest(() => {
     return queryFakeList({
@@ -46,4 +46,4 @@ const Projects: React.FC = () => {
   );
 };
 
-export default Projects;
+export default OrderHistory;

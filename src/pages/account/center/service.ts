@@ -2,7 +2,7 @@ import { request } from 'umi';
 import type { CurrentUser, ListItemDataType } from './data.d';
 
 export async function queryCurrent(): Promise<{ data: CurrentUser }> {
-  return request('/api/currentUserDetail');
+  return request('/api/user/currentUser');
 }
 
 export async function queryFakeList(params: {

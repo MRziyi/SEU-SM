@@ -30,8 +30,8 @@ export default {
         data: {
           isLogin: false,
         },
-        errorCode: '401',
-        errorMessage: '请先登录！',
+        code: '401',
+        description: '请先登录！',
         success: true,
       });
       return;
@@ -100,7 +100,7 @@ export default {
       },
       success: true,
     });
-    access = 'guest';
+    access = '';
   },
   'POST /api/user/logout': (req: Request, res: Response) => {
     access = '';
