@@ -11,7 +11,7 @@ import defaultSettings from '../config/defaultSettings';
 import { RequestConfig } from 'umi';
 
 export const request: RequestConfig = {
-  prefix: '', // 指定API后端服务器地址
+  //prefix: 'http://123.60.24.195', // 指定API后端服务器地址
   errorConfig: {
     adaptor: (resData) => {
       return {
