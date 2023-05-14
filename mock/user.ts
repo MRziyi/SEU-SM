@@ -36,13 +36,14 @@ export default {
       return;
     }
     res.send({
-      code: true,
+      code: 0,
       data: {
-        name: 'Serati Ma',
-        avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
-        userid: '00000001',
-        access: getAccess(),
+        nickName: 'Serati Ma',
+        id: 213213001,
+        imgUrl: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+        privilege: getAccess(),
         phone: '0752-268888888',
+        credit: 80,
       },
     });
   },
@@ -73,6 +74,7 @@ export default {
     if (userPassword === 'ant.design' && userAccount === 'admin') {
       res.send({
         data: {
+          status: 1,
           type,
         },
         code: 0,
@@ -83,6 +85,7 @@ export default {
     if (userPassword === 'ant.design' && userAccount === 'user') {
       res.send({
         data: {
+          status: 1,
           type,
         },
         code: 0,
@@ -92,10 +95,11 @@ export default {
     }
     res.send({
       data: {
+        status: 0,
         type,
       },
       code: 100,
-      description: '用户名或密码错误！',
+      description: 'Error',
     });
     access = '';
   },
