@@ -3,7 +3,6 @@ import { defineConfig } from 'umi';
 import { join } from 'path';
 import defaultSettings from './defaultSettings';
 export default defineConfig({
-  history: { type: 'hash' }, // 默认是 browser
   hash: true,
   antd: {},
   dva: {

@@ -1,4 +1,4 @@
 [[redirects]]
-  from = "/api/*"
+  from = "https://seu-sm.netlify.app/api/*"
   to = "http://123.60.24.195/:splat"
   status = 200
