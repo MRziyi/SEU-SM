@@ -1,9 +1,7 @@
 import { request } from 'umi';
-import type { Params, ListItemDataType } from './data';
+import type { Params, ItemData } from './data';
 
-export async function queryFakeList(
-  params: Params,
-): Promise<{ data: { list: ListItemDataType[] } }> {
+export async function queryFakeList(params: Params): Promise<{ data: { list: ItemData[] } }> {
   return request('/api/fake_list', {
     params,
   });

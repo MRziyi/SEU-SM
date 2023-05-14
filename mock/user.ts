@@ -74,7 +74,6 @@ export default {
     if (userPassword === 'ant.design' && userAccount === 'admin') {
       res.send({
         data: {
-          status: 1,
           type,
         },
         code: 0,
@@ -85,7 +84,6 @@ export default {
     if (userPassword === 'ant.design' && userAccount === 'user') {
       res.send({
         data: {
-          status: 1,
           type,
         },
         code: 0,
@@ -95,7 +93,6 @@ export default {
     }
     res.send({
       data: {
-        status: 0,
         type,
       },
       code: 100,

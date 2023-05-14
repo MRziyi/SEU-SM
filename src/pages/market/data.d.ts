@@ -17,5 +17,5 @@ export interface ItemData {
   status: number;
   uploadedTime: string;
   ownerName: string;
-  ownerAvatarUrl: string;
+  ownerUrl: string;
 }

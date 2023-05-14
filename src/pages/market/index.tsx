@@ -64,7 +64,7 @@ const Projects: FC = () => {
               <span>{moment(item.uploadedTime).fromNow()}</span>
               <div className={styles.avatarList}>
                 <Paragraph className={styles.item} ellipsis={{ rows: 1 }}>
-                  {item.ownerAvatarUrl}
+                  {item.ownerUrl}
                 </Paragraph>
                 {item.ownerName}
               </div>

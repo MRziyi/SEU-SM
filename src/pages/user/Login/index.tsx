@@ -1,24 +1,11 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Alert, message, Tabs } from 'antd';
+import { message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import { ProFormText, LoginForm } from '@ant-design/pro-form';
 import { history, useModel } from 'umi';
-// import { SelectLang } from 'umi';
 import Footer from '@/components/Footer';
 import { login } from '@/services/ant-design-pro/api';
 import styles from './index.less';
-const LoginMessage: React.FC<{
-  content: string;
-}> = ({ content }) => (
-  <Alert
-    style={{
-      marginBottom: 24,
-    }}
-    message={content}
-    type="error"
-    showIcon
-  />
-);
 const Login: React.FC = () => {
   const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
@@ -40,7 +27,7 @@ const Login: React.FC = () => {
         ...values,
         type,
       });
-      if (msg.data.status === 1) {
+      if (msg.data) {
         console.log(msg);
         const defaultLoginSuccessMessage = '登录成功！';
         message.success(defaultLoginSuccessMessage);
@@ -62,7 +49,7 @@ const Login: React.FC = () => {
       // message.error(defaultLoginFailureMessage);
     }
   };
-  const { status, type: loginType } = userLoginState;
+  const { type: loginType } = userLoginState;
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -79,9 +66,6 @@ const Login: React.FC = () => {
             <Tabs.TabPane key="verify" tab={'统一身份验证登录'} />
           </Tabs>
 
-          {status === 0 && loginType === 'account' && (
-            <LoginMessage content={'错误的一卡通号和密码'} />
-          )}
           {type === 'account' && (
             <>
               <ProFormText
@@ -123,7 +107,6 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {status === 0 && loginType === 'verify'}
           {type === 'verify' && <></>}
           <div
             style={{
