@@ -2,6 +2,8 @@
 
 the front-end of Southeast University Secondary Market is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
 
+test
+
 ## Environment Prepare
 
 Install `node_modules`:
