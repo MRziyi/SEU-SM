@@ -1,4 +1,4 @@
-import { Button, Card, Col, Form, List, Row, Select, Typography } from 'antd';
+import { Avatar, Button, Card, Col, Form, List, Row, Select, Typography } from 'antd';
 import moment from 'moment';
 import type { FC } from 'react';
 import { useRequest } from 'umi';
@@ -63,10 +63,8 @@ const Projects: FC = () => {
             <div className={styles.cardItemContent}>
               <span>{moment(item.uploadedTime).fromNow()}</span>
               <div className={styles.avatarList}>
-                <Paragraph className={styles.item} ellipsis={{ rows: 1 }}>
-                  {item.ownerUrl}
-                </Paragraph>
-                {item.ownerName}
+                <span style={{ marginRight: 10 }}>{item.ownerName}</span>
+                <Avatar size="small" className={styles.avatar} src={item.ownerUrl} alt="avatar" />
               </div>
             </div>
           </Card>
@@ -86,23 +84,23 @@ const Projects: FC = () => {
     <div>
       <PageContainer
         content={
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <UploadForm
-              btn={
-                <Button type="primary" icon={<ShopOutlined />} size={'large'}>
-                  发布闲置
-                </Button>
-              }
-            ></UploadForm>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <Input.Search
-                placeholder="请输入"
-                enterButton="搜索"
-                size="large"
-                onSearch={handleFormSubmit}
-                style={{ maxWidth: 522 }}
-              />
-            </div>
+          <div style={{ textAlign: 'center' }}>
+            <span style={{ marginRight: '10%' }}>
+              <UploadForm
+                btn={
+                  <Button type="primary" icon={<ShopOutlined />} size={'large'}>
+                    发布闲置
+                  </Button>
+                }
+              ></UploadForm>
+            </span>
+            <Input.Search
+              placeholder="请输入"
+              enterButton="搜索"
+              size="large"
+              onSearch={handleFormSubmit}
+              style={{ maxWidth: 522 }}
+            />
           </div>
         }
       >

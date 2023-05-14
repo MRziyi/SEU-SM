@@ -56,7 +56,7 @@ function fakeList(count: number): ItemData[] {
       itemName: itemName[i % 8],
       imgUrl: imgUrl[i % 4],
       ownerId: `owner-${i}`,
-      description: description[i],
+      description: description[i % 5],
       price: i * 10,
       status: i,
       uploadedTime: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i).toString(),
@@ -74,10 +74,8 @@ function getFakeList(req: Request, res: Response) {
   const count = params.count * 1 || 20;
 
   const result = fakeList(count);
-  console.log('result::');
-
-  console.log(result);
   return res.json({
+    code: 0,
     data: {
       list: result,
     },
