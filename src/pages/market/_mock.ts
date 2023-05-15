@@ -83,5 +83,5 @@ function getFakeList(req: Request, res: Response) {
 }
 
 export default {
-  'GET  /api/fake_list': getFakeList,
+  'GET  /api/item/List': getFakeList,
 };

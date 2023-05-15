@@ -16,9 +16,15 @@ const { Option } = Select;
 const FormItem = Form.Item;
 const { Paragraph } = Typography;
 
+const paginationProps = {
+  showSizeChanger: true,
+  showQuickJumper: true,
+  pageSize: 5,
+  total: 20,
+};
+
 const Projects: FC = () => {
   const { data, loading, run } = useRequest((values: any) => {
-    console.log('form data', values);
     return queryFakeList({
       count: 8,
     });
@@ -44,6 +50,7 @@ const Projects: FC = () => {
         xl: 4,
         xxl: 4,
       }}
+      pagination={paginationProps}
       dataSource={list}
       renderItem={(item) => (
         <List.Item>
