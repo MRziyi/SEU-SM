@@ -69,11 +69,7 @@ function fakeList(count: number): ItemData[] {
 }
 
 function getFakeList(req: Request, res: Response) {
-  const params: any = req.query;
-
-  const count = params.count * 1 || 20;
-
-  const result = fakeList(count);
+  const result = fakeList(30);
   return res.json({
     code: 0,
     data: {
@@ -84,5 +80,5 @@ function getFakeList(req: Request, res: Response) {
 }
 
 export default {
-  'GET  /api/item/List': getFakeList,
+  'GET  /api/item/list': getFakeList,
 };

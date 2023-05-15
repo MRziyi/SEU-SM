@@ -1,18 +1,12 @@
-import {
-  PlusOutlined,
-  HomeOutlined,
-  ContactsOutlined,
-  ClusterOutlined,
-  PhoneOutlined,
-} from '@ant-design/icons';
-import { Avatar, Card, Col, Divider, Input, Row, Tag } from 'antd';
-import React, { useState, useRef } from 'react';
+import { ContactsOutlined, ClusterOutlined, PhoneOutlined } from '@ant-design/icons';
+import { Card, Col, Divider, Row } from 'antd';
+import React, { useState } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
-import { Link, useRequest } from 'umi';
+import { useRequest } from 'umi';
 import type { RouteChildrenProps } from 'react-router';
 import OrderHistory from './components/OrderHistory';
 import Commments from './components/Commments';
-import type { CurrentUser, TagType, tabKeyType } from './data.d';
+import type { CurrentUser, tabKeyType } from './data.d';
 import { queryCurrent } from './service';
 import styles from './Center.less';
 
