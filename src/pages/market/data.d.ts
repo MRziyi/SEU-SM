@@ -4,9 +4,11 @@ export type Member = {
   id: string;
 };
 
-export interface Params {
-  count: number;
-}
+export type Params = {
+  keyword?: string;
+  // 其他已有属性
+};
+
 export interface ItemData {
   itemId: string;
   itemName: string;

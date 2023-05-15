@@ -77,6 +77,7 @@ function getFakeList(req: Request, res: Response) {
   return res.json({
     code: 0,
     data: {
+      totalNum: 30,
       list: result,
     },
   });

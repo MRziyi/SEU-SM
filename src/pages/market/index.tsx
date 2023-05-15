@@ -5,39 +5,63 @@ import { useRequest } from 'umi';
 import StandardFormRow from './components/StandardFormRow';
 import TagSelect from './components/TagSelect';
 import type { ItemData } from './data.d';
-import { queryFakeList } from './service';
+import { queryList, searchList } from './service';
 import styles from './style.less';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Input } from 'antd';
 import { ShopOutlined } from '@ant-design/icons';
 import UploadForm from './components/UploadForm/UploadForm';
+import { useState } from 'react';
 
 const { Option } = Select;
 const FormItem = Form.Item;
 const { Paragraph } = Typography;
 
-const paginationProps = {
-  showSizeChanger: true,
-  showQuickJumper: true,
-  pageSize: 5,
-  total: 20,
-};
-
 const Projects: FC = () => {
-  const { data, loading, run } = useRequest((values: any) => {
-    return queryFakeList({
-      count: 8,
-    });
-  });
+  const { loading, run } = useRequest(
+    (values: any) => {
+      return queryList();
+    },
+    {
+      onSuccess: (result) => {
+        setTotalNum(result.totalNum);
+        setListData(result.list);
+      },
+    },
+  );
 
-  const handleFormSubmit = (value: string) => {
-    // eslint-disable-next-line no-console
-    console.log(value);
+  const [pageSize, setPageSize] = useState<number>(8);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [listData, setListData] = useState<ItemData[]>([]);
+  const [totalNum, setTotalNum] = useState<number>(0);
+
+  function changePage(page: number, pageSize: number) {
+    setCurrentPage(page);
+    setPageSize(pageSize);
+  }
+
+  function showTotal(total: number, range: [number, number]) {
+    return `${range[0]}-${range[1]} 共 ${total} 件`;
+  }
+
+  const paginationProps = {
+    onChange: changePage,
+    showSizeChanger: true,
+    showQuickJumper: true,
+    currentPage: currentPage,
+    pageSize: pageSize,
+    total: totalNum,
+    showTotal: showTotal,
+    pageSizeOptions: [8, 16, 24, 36],
   };
 
-  const list = data?.list || [];
+  const handleFormSubmit = async (value: string) => {
+    const result = await searchList({ keyword: value });
+    setListData(result.data.list);
+    setTotalNum(result.data.totalNum);
+  };
 
-  const cardList = list && (
+  const cardList = listData && (
     <List<ItemData>
       rowKey="itemId"
       loading={loading}
@@ -51,7 +75,7 @@ const Projects: FC = () => {
         xxl: 4,
       }}
       pagination={paginationProps}
-      dataSource={list}
+      dataSource={listData}
       renderItem={(item) => (
         <List.Item>
           <Card
