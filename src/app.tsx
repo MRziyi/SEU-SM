@@ -8,7 +8,7 @@ import Footer from '@/components/Footer';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import defaultSettings from '../config/defaultSettings';
-import { RequestConfig } from 'umi';
+import type { RequestConfig } from 'umi';
 
 export const request: RequestConfig = {
   //prefix: 'http://123.60.24.195', // 指定API后端服务器地址

@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import type { ItemData } from './data.d';
+import type { ItemData, CommentData } from './data.d';
 
 const itemName = [
   'Alipay',
@@ -52,10 +52,10 @@ function fakeList(count: number): ItemData[] {
   const list = [];
   for (let i = 0; i < count; i += 1) {
     list.push({
-      itemId: `item-${i}`,
+      itemId: i,
       itemName: itemName[i % 8],
       imgUrl: imgUrl[i % 4],
-      ownerId: `owner-${i}`,
+      ownerId: i,
       description: description[i % 5],
       price: i * 10,
       status: i,
@@ -68,7 +68,21 @@ function fakeList(count: number): ItemData[] {
   return list;
 }
 
-function getFakeList(req: Request, res: Response) {
+function fakeCommentList(count: number): CommentData[] {
+  const list = [];
+  for (let i = 0; i < count; i += 1) {
+    list.push({
+      commentId: i,
+      fromUserName: itemName[i % 8],
+      fromUserUrl: ownerUrl[i % 8],
+      rank: (i % 5) + 1,
+      centent: description[i % 5],
+    });
+  }
+  return list;
+}
+
+function getMyList(req: Request, res: Response) {
   const result = fakeList(12);
   return res.json({
     code: 0,
@@ -78,6 +92,31 @@ function getFakeList(req: Request, res: Response) {
     },
   });
 }
+
+function getOrderList(req: Request, res: Response) {
+  const result = fakeList(36);
+  return res.json({
+    code: 0,
+    data: {
+      totalNum: 36,
+      list: result,
+    },
+  });
+}
+
+function getCommentList(req: Request, res: Response) {
+  const result = fakeCommentList(24);
+  return res.json({
+    code: 0,
+    data: {
+      totalNum: 24,
+      list: result,
+    },
+  });
+}
+
 export default {
-  'GET  /api/item/myList': getFakeList,
+  'GET  /api/item/listMy': getMyList,
+  'GET  /api/order/list': getOrderList,
+  'GET  /api/comment/list': getCommentList,
 };

@@ -2,18 +2,25 @@ import { Avatar, Card, List, Typography } from 'antd';
 import { useRequest } from 'umi';
 import React, { useState } from 'react';
 import moment from 'moment';
-import { queryMyList } from '../../service';
+import { queryList } from '../../service';
 import type { ItemData } from '../../data';
 import styles from './index.less';
 
 const { Paragraph } = Typography;
 
-const OrderHistory: React.FC = () => {
-  // 获取tab列表数据
+interface ListType {
+  listType: 'myPublish' | 'orderHistory';
+}
+
+const OrderHistory: React.FC<ListType> = ({ listType }) => {
+  const [pageSize, setPageSize] = useState<number>(6);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [listData, setListData] = useState<ItemData[]>([]);
+  const [totalNum, setTotalNum] = useState<number>(0);
+  // 获取列表数据
   const { loading } = useRequest(
-    (values: any) => {
-      console.log('Get listing');
-      return queryMyList();
+    () => {
+      return queryList(listType);
     },
     {
       onSuccess: (result) => {
@@ -23,14 +30,9 @@ const OrderHistory: React.FC = () => {
     },
   );
 
-  const [pageSize, setPageSize] = useState<number>(6);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [listData, setListData] = useState<ItemData[]>([]);
-  const [totalNum, setTotalNum] = useState<number>(0);
-
-  function changePage(page: number, pageSize: number) {
-    setCurrentPage(page);
-    setPageSize(pageSize);
+  function changePage(_page: number, _pageSize: number) {
+    setCurrentPage(_page);
+    setPageSize(_pageSize);
   }
 
   function showTotal(total: number, range: [number, number]) {
@@ -39,6 +41,8 @@ const OrderHistory: React.FC = () => {
   const paginationProps = {
     onChange: changePage,
     showQuickJumper: true,
+    showSizeChanger: true,
+    pageSizeOptions: [6, 12, 18, 24],
     currentPage: currentPage,
     pageSize: pageSize,
     total: totalNum,

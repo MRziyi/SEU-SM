@@ -15,6 +15,10 @@ declare namespace API {
     type?: string;
   };
 
+  type PublishResult = {
+    ok?: boolean;
+  };
+
   type PageParams = {
     current?: number;
     pageSize?: number;

@@ -5,7 +5,7 @@ import { GridContent } from '@ant-design/pro-layout';
 import { useRequest } from 'umi';
 import type { RouteChildrenProps } from 'react-router';
 import OrderHistory from './components/OrderHistory';
-import Commments from './components/Commments';
+import Comments from './components/Comments';
 import type { CurrentUser, tabKeyType } from './data.d';
 import { queryCurrent } from './service';
 import styles from './Center.less';
@@ -15,15 +15,23 @@ const operationTabList = [
     key: 'orderHistory',
     tab: (
       <span>
-        历史订单 <span style={{ fontSize: 14 }}>(8)</span>
+        历史订单 <span style={{ fontSize: 14 }} />
       </span>
     ),
   },
   {
-    key: 'commment',
+    key: 'myPublish',
     tab: (
       <span>
-        评价 <span style={{ fontSize: 14 }}>(8)</span>
+        我的发布 <span style={{ fontSize: 14 }} />
+      </span>
+    ),
+  },
+  {
+    key: 'comments',
+    tab: (
+      <span>
+        评价 <span style={{ fontSize: 14 }} />
       </span>
     ),
   },
@@ -72,10 +80,13 @@ const Center: React.FC<RouteChildrenProps> = () => {
   // 渲染tab切换
   const renderChildrenByTabKey = (tabValue: tabKeyType) => {
     if (tabValue === 'orderHistory') {
-      return <OrderHistory />;
+      return <OrderHistory key="orderHistory" listType="orderHistory" />;
     }
-    if (tabValue === 'commments') {
-      return <Commments />;
+    if (tabValue === 'myPublish') {
+      return <OrderHistory key="myPublish" listType="myPublish" />;
+    }
+    if (tabValue === 'comments') {
+      return <Comments key="comments" />;
     }
     return null;
   };

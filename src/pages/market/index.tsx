@@ -18,8 +18,13 @@ const FormItem = Form.Item;
 const { Paragraph } = Typography;
 
 const Projects: FC = () => {
+  const [pageSize, setPageSize] = useState<number>(8);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [listData, setListData] = useState<ItemData[]>([]);
+  const [totalNum, setTotalNum] = useState<number>(0);
+
   const { loading, run } = useRequest(
-    (values: any) => {
+    () => {
       return queryList();
     },
     {
@@ -30,14 +35,9 @@ const Projects: FC = () => {
     },
   );
 
-  const [pageSize, setPageSize] = useState<number>(8);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [listData, setListData] = useState<ItemData[]>([]);
-  const [totalNum, setTotalNum] = useState<number>(0);
-
-  function changePage(page: number, pageSize: number) {
-    setCurrentPage(page);
-    setPageSize(pageSize);
+  function changePage(_page: number, _pageSize: number) {
+    setCurrentPage(_page);
+    setPageSize(_pageSize);
   }
 
   function showTotal(total: number, range: [number, number]) {
@@ -123,7 +123,7 @@ const Projects: FC = () => {
                     发布闲置
                   </Button>
                 }
-              ></UploadForm>
+              />
             </span>
             <Input.Search
               placeholder="请输入"
@@ -142,7 +142,7 @@ const Projects: FC = () => {
               onValuesChange={(_, values) => {
                 // 表单项变化时请求数据
                 // 模拟查询表单生效
-                run(values);
+                run();
               }}
             >
               <StandardFormRow title="所属类目" block style={{ paddingBottom: 11 }}>

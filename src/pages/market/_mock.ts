@@ -79,6 +79,34 @@ function getFakeList(req: Request, res: Response) {
   });
 }
 
+const waitTime = (time: number = 100) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, time);
+  });
+};
+
 export default {
   'GET  /api/item/list': getFakeList,
+
+  'POST /api/item/create': async (req: Request, res: Response) => {
+    await waitTime(1000);
+    const { _imgUrl } = req.body;
+    if (_imgUrl === 'http://test_for_upload')
+      res.send({
+        data: {
+          ok: 1,
+        },
+        code: 0,
+      });
+    else
+      res.send({
+        data: {
+          ok: imgUrl,
+        },
+        code: 0,
+      });
+    return;
+  },
 };

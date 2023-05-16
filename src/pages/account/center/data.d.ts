@@ -1,30 +1,4 @@
-export type tabKeyType = 'orderHistory' | 'commments';
-export interface TagType {
-  key: string;
-  label: string;
-}
-
-export type GeographicType = {
-  province: {
-    label: string;
-    key: string;
-  };
-  city: {
-    label: string;
-    key: string;
-  };
-};
-
-export type NoticeType = {
-  id: string;
-  title: string;
-  logo: string;
-  description: string;
-  updatedAt: string;
-  member: string;
-  href: string;
-  memberLink: string;
-};
+export type tabKeyType = 'orderHistory' | 'comments' | 'myPublish';
 
 export type CurrentUser = {
   nickName?: string;
@@ -35,21 +9,23 @@ export type CurrentUser = {
   credit: number;
 };
 
-export type Member = {
-  avatar: string;
-  name: string;
-  id: string;
-};
-
 export interface ItemData {
-  itemId: string;
+  itemId: number;
   itemName: string;
   imgUrl: string;
-  ownerId: string;
+  ownerId: number;
   description: string;
   price: number;
   status: number;
   uploadedTime: string;
   ownerName: string;
   ownerUrl: string;
+}
+
+export interface CommentData {
+  commentId: number;
+  fromUserName: string;
+  fromUserUrl: string;
+  rank: number;
+  centent: string;
 }
