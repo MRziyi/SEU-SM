@@ -1,7 +1,7 @@
 import { Avatar, Button, Card, Col, Form, List, Row, Select, Typography } from 'antd';
 import moment from 'moment';
 import type { FC } from 'react';
-import { useRequest } from 'umi';
+import { Link, useRequest } from 'umi';
 import StandardFormRow from './components/StandardFormRow';
 import TagSelect from './components/TagSelect';
 import type { ItemData } from './data.d';
@@ -77,29 +77,57 @@ const Projects: FC = () => {
       pagination={paginationProps}
       dataSource={listData}
       renderItem={(item) => (
-        <List.Item>
-          <Card
-            className={styles.card}
-            hoverable
-            cover={<img alt={item.itemName} src={item.imgUrl} />}
-          >
-            <Card.Meta
-              title={<a>{item.itemName}</a>}
-              description={
-                <Paragraph className={styles.item} ellipsis={{ rows: 2 }}>
-                  {item.description}
-                </Paragraph>
-              }
-            />
-            <div className={styles.cardItemContent}>
-              <span>{moment(item.uploadedTime).fromNow()}</span>
-              <div className={styles.avatarList}>
-                <span style={{ marginRight: 10 }}>{item.ownerName}</span>
-                <Avatar size="small" className={styles.avatar} src={item.ownerUrl} alt="avatar" />
+        <Link to={`/profile/item-info/${item.itemId}`}>
+          <List.Item>
+            <Card
+              className={styles.card}
+              hoverable
+              cover={<img alt={item.itemName} src={item.imgUrl} />}
+            >
+              <Card.Meta
+                title={
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <a>{item.itemName}</a>
+                    <div className={styles.avatarList}>
+                      <span style={{ fontSize: '15px', marginRight: '10px' }}>
+                        {item.ownerName}
+                      </span>
+                      <Avatar
+                        size="small"
+                        className={styles.avatar}
+                        src={item.ownerUrl}
+                        alt="avatar"
+                      />
+                    </div>
+                  </div>
+                }
+                description={
+                  <div>
+                    <b style={{ color: 'darkblue', fontWeight: 'bolder', fontSize: '15px' }}>
+                      ¥ {item.price}
+                    </b>
+                    <Paragraph
+                      style={{ marginTop: 1, whiteSpace: 'pre-wrap' }}
+                      className={styles.item}
+                      ellipsis={false}
+                    >
+                      {item.description}
+                    </Paragraph>
+                  </div>
+                }
+              />
+              <div className={styles.cardItemContent}>
+                <span>{moment(item.uploadedTime).fromNow()}</span>
               </div>
-            </div>
-          </Card>
-        </List.Item>
+            </Card>
+          </List.Item>
+        </Link>
       )}
     />
   );

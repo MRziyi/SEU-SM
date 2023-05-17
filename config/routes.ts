@@ -7,6 +7,13 @@ export default [
       { component: './404' },
     ],
   },
+  {
+    path: '/profile/item-info',
+    component: './profile/ItemInfo',
+    name: '商品详情',
+    icon: 'book',
+    layout: false,
+  },
   { path: '/welcome', name: '欢迎', icon: 'smile', component: './Welcome' },
   {
     path: '/admin',

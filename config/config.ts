@@ -149,6 +149,7 @@ export default defineConfig({
               name: '应用',
               icon: 'smile',
               path: '/list/search/applications',
+
               component: './list/search/applications',
             },
           ],
