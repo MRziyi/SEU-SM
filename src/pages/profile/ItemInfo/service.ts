@@ -1,15 +1,15 @@
 import { request } from 'umi';
-import type { ItemData, CurrentUser } from '../data.d';
+import type { ItemData, CurrentUser } from '../data';
 
-export async function queryItemInfo(_itemId: string): Promise<{
+export async function queryItemInfo(itemIdPara: any): Promise<{
   data: {
-    Item: ItemData;
-    OwnerInfo: CurrentUser;
+    itemInfo: ItemData;
+    ownerInfo: CurrentUser;
   };
 }> {
   return request('/api/item/info', {
     data: {
-      itemId: _itemId,
+      itemId: itemIdPara,
     },
   });
 }

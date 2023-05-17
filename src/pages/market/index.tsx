@@ -95,7 +95,7 @@ const Projects: FC = () => {
                   >
                     <a>{item.itemName}</a>
                     <div className={styles.avatarList}>
-                      <span style={{ fontSize: '15px', marginRight: '10px' }}>
+                      <span style={{ fontSize: '13px', marginRight: '10px' }}>
                         {item.ownerName}
                       </span>
                       <Avatar
@@ -113,7 +113,7 @@ const Projects: FC = () => {
                       ¥ {item.price}
                     </b>
                     <Paragraph
-                      style={{ marginTop: 1, whiteSpace: 'pre-wrap' }}
+                      style={{ marginTop: 3, whiteSpace: 'pre-wrap' }}
                       className={styles.item}
                       ellipsis={false}
                     >

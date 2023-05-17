@@ -5,7 +5,7 @@ export type Member = {
 };
 
 export type Params = {
-  keyword?: string;
+  keyword: string;
   // 其他已有属性
 };
 
@@ -23,10 +23,10 @@ export interface ItemData {
 }
 
 export type CurrentUser = {
-  nickName?: string;
-  id?: string;
-  imgUrl?: string;
-  privilege?: string;
-  phone?: string;
+  nickName: string;
+  id: string;
+  imgUrl: string;
+  privilege: string;
+  phone: string;
   credit: number;
 };

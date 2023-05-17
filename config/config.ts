@@ -199,6 +199,13 @@ export default defineConfig({
           path: '/profile/advanced',
           component: './profile/advanced',
         },
+        {
+          path: '/profile/item-info/:itemId',
+          component: './profile/itemInfo',
+          name: '商品详情',
+          icon: 'book',
+          //layout: false,
+        },
       ],
     },
     {

@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import type { ItemData } from './data.d';
+import type { ItemData, CurrentUser } from './data.d';
 
 const itemName = [
   'Alipay',
@@ -48,7 +48,7 @@ const ownerName = [
   '仲尼',
 ];
 
-function fakeList(count: number): ItemData[] {
+function fakeItemList(count: number): ItemData[] {
   const list = [];
   for (let i = 0; i < count; i += 1) {
     list.push({
@@ -64,18 +64,31 @@ function fakeList(count: number): ItemData[] {
       ownerUrl: ownerUrl[i % 8],
     });
   }
-
+  return list;
+}
+function fakeUserList(count: number): CurrentUser[] {
+  const list = [];
+  for (let i = 0; i < count; i += 1) {
+    list.push({
+      nickName: ownerName[i % 10],
+      id: `owner-${i}`,
+      imgUrl: ownerUrl[i % 8],
+      privilege: 'user',
+      phone: '1999999' + i,
+      credit: i + 50,
+    });
+  }
   return list;
 }
 
 function getItemInfo(req: Request, res: Response) {
-  const result = fakeList(1);
-  result[0].itemId = req.body.itemId;
+  const itemResult = fakeItemList(1);
+  const ownerResult = fakeUserList(1);
   return res.json({
     code: 0,
     data: {
-      totalNum: 30,
-      list: result[0],
+      itemInfo: itemResult[0],
+      ownerInfo: ownerResult[0],
     },
   });
 }
