@@ -55,6 +55,37 @@ export default defineConfig({
       ],
     },
     {
+      path: '/profile',
+      name: '详情',
+      icon: 'profile',
+      layout: false,
+      routes: [
+        {
+          path: '/profile',
+          redirect: '/profile/basic',
+        },
+        {
+          name: '基础',
+          icon: 'smile',
+          path: '/profile/basic',
+          component: './profile/basic',
+        },
+        {
+          name: '进阶',
+          icon: 'smile',
+          path: '/profile/advanced',
+          component: './profile/advanced',
+        },
+        {
+          path: '/profile/item-info/:itemId',
+          component: './profile/itemInfo',
+          name: '商品详情',
+          icon: 'book',
+          layout: false,
+        },
+      ],
+    },
+    {
       name: '市场',
       icon: 'shoppingCart',
       path: '/market',
@@ -175,36 +206,6 @@ export default defineConfig({
           icon: 'smile',
           path: '/list/card-list',
           component: './list/card-list',
-        },
-      ],
-    },
-    {
-      path: '/profile',
-      name: '详情',
-      icon: 'profile',
-      routes: [
-        {
-          path: '/profile',
-          redirect: '/profile/basic',
-        },
-        {
-          name: '基础',
-          icon: 'smile',
-          path: '/profile/basic',
-          component: './profile/basic',
-        },
-        {
-          name: '进阶',
-          icon: 'smile',
-          path: '/profile/advanced',
-          component: './profile/advanced',
-        },
-        {
-          path: '/profile/item-info/:itemId',
-          component: './profile/itemInfo',
-          name: '商品详情',
-          icon: 'book',
-          //layout: false,
         },
       ],
     },

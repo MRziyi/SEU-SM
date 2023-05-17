@@ -1,10 +1,11 @@
 import { PageContainer } from '@ant-design/pro-layout';
 import { Image, Card, Descriptions, Divider, Rate, Button, Input, Avatar } from 'antd';
-import { FC, useEffect, useState } from 'react';
-import { useParams, useRequest } from 'umi';
+import type { FC } from 'react';
+import { useEffect, useState } from 'react';
+import { useHistory, useParams, useRequest } from 'umi';
 import { queryItemInfo } from './service';
 import OrderForm from './components/OrderForm/OrderForm';
-import { CommentOutlined, DollarOutlined } from '@ant-design/icons';
+import { CommentOutlined, DollarOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import styles from './style.less';
 
 const desc = ['极差', '差劲', '一般', '不错', '极好'];
@@ -14,6 +15,12 @@ interface RouteParams {
 }
 
 const ItemInfo: FC = () => {
+  const history = useHistory();
+
+  const handleGoBack = () => {
+    history.goBack();
+  };
+
   const { itemId } = useParams<RouteParams>();
   const [fetchedItemId, setFetchedItemId] = useState<string | undefined>(itemId);
 
@@ -61,6 +68,16 @@ const ItemInfo: FC = () => {
               alt="avatar"
             />
             <span style={{ marginLeft: '10px' }}>{data?.ownerInfo.nickName}</span>
+
+            <Button
+              style={{ marginLeft: '6%' }}
+              type="primary"
+              icon={<ShoppingCartOutlined />}
+              size={'large'}
+              onClick={handleGoBack}
+            >
+              返回市场
+            </Button>
           </span>
         </div>
       }
