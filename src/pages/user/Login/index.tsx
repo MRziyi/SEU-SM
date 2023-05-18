@@ -6,6 +6,7 @@ import { history, useModel } from 'umi';
 import Footer from '@/components/Footer';
 import { login } from '@/services/ant-design-pro/api';
 import styles from './index.less';
+
 const Login: React.FC = () => {
   const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
@@ -32,7 +33,7 @@ const Login: React.FC = () => {
         const defaultLoginSuccessMessage = '登录成功！';
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
-        /** 此方法会跳转到 redirect 参数所在的位置 */
+        /** 此方法会跳转到 redirect 参数所在的位 置 */
         if (!history) return;
         const { query } = history.location;
         const { redirect } = query as {
@@ -49,6 +50,7 @@ const Login: React.FC = () => {
       // message.error(defaultLoginFailureMessage);
     }
   };
+  const { type: loginType } = userLoginState;
   return (
     <div className={styles.container}>
       <div className={styles.content}>
