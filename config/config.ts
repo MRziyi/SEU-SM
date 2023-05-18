@@ -54,6 +54,7 @@ export default defineConfig({
         },
       ],
     },
+
     {
       path: '/profile',
       name: '详情',
@@ -78,9 +79,16 @@ export default defineConfig({
         },
         {
           path: '/profile/item-info/:itemId',
-          component: './profile/ItemInfo',
+          component: './profile/itemInfo',
           name: '商品详情',
           icon: 'book',
+        },
+        {
+          path: '/profile/order-info/:itemId',
+          name: '历史订单',
+          icon: 'book',
+          component: './profile/order',
+          layout: false,
         },
       ],
     },
