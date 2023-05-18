@@ -58,7 +58,7 @@ export default defineConfig({
       path: '/profile',
       name: '详情',
       icon: 'profile',
-      layout: false,
+      hideInMenu: true,
       routes: [
         {
           path: '/profile',
@@ -81,7 +81,6 @@ export default defineConfig({
           component: './profile/ItemInfo',
           name: '商品详情',
           icon: 'book',
-          layout: false,
         },
       ],
     },
