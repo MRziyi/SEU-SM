@@ -86,10 +86,10 @@ function fakeOrderList(count: number): OrderData[] {
   const list = [];
   for (let i = 0; i < count; i += 1) {
     list.push({
-      id: i,
+      id: 'i',
       buyerld: 'i',
       sellerld: 'i',
-      state: i,
+      state: 1,
       updateTime: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i).toString(),
       createTime: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i).toString(),
       item: {
