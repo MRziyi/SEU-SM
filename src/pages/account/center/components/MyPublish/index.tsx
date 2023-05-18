@@ -54,7 +54,7 @@ const MyPublish: React.FC = () => {
       pagination={paginationProps}
       dataSource={listData}
       renderItem={(item) => (
-        <Link to={`/order/order-info/${item.itemId}`}>
+        <Link to={`/profile/item-info/${item.itemId}`}>
           <List.Item>
             <Card
               className={styles.card}

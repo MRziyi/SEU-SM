@@ -1,9 +1,21 @@
-import { Card, Descriptions, Divider, Steps, Statistic, Badge, Popover } from 'antd';
+import {
+  Card,
+  Descriptions,
+  Divider,
+  Steps,
+  Statistic,
+  Badge,
+  Popover,
+  Button,
+  Image,
+  Avatar,
+} from 'antd';
 import type { FC } from 'react';
-import { useParams, useRequest } from 'umi';
+import { useHistory, useParams, useRequest } from 'umi';
 import { queryOrderInfo } from './service';
 import { GridContent, PageContainer, RouteContext } from '@ant-design/pro-layout';
 import styles from './style.less';
+import { DollarOutlined, UserOutlined } from '@ant-design/icons';
 
 const orderState = ['已下单', '已付款', '已发货', '已签收'];
 
@@ -14,6 +26,11 @@ interface RouteParams {
 const { Step } = Steps;
 
 const OrderInfo: FC = () => {
+  const history = useHistory();
+
+  const handleGoBack = () => {
+    history.goBack();
+  };
   const { orderId } = useParams<RouteParams>();
 
   const { data, loading } = useRequest(() => {
@@ -22,24 +39,8 @@ const OrderInfo: FC = () => {
 
   const extra = (
     <div className={styles.moreInfo}>
-      <Statistic title="状态" value={data?.state !== undefined ? orderState[data.state] : 114514} />
       <Statistic title="订单金额" value={data?.item.price} prefix="¥" />
     </div>
-  );
-
-  const description = (
-    <RouteContext.Consumer>
-      {({ isMobile }) => (
-        <Descriptions className={styles.headerList} size="small" column={isMobile ? 1 : 2}>
-          <Descriptions.Item label="订单号">{data?.id}</Descriptions.Item>
-          <Descriptions.Item label="买家id">12345</Descriptions.Item>
-          <Descriptions.Item label="卖家id">678910</Descriptions.Item>
-          <Descriptions.Item label="创建时间">2023.5.17 </Descriptions.Item>
-          <Descriptions.Item label="更新时间">2023.5.17</Descriptions.Item>
-          <Descriptions.Item label="备注">七天内支持退换</Descriptions.Item>
-        </Descriptions>
-      )}
-    </RouteContext.Consumer>
   );
 
   const popoverContent = (
@@ -73,7 +74,28 @@ const OrderInfo: FC = () => {
       loading={loading}
       title="订单详情"
       className={styles.pageHeader}
-      content={description}
+      content={
+        <div style={{ textAlign: 'center' }}>
+          <span>
+            {/* <Button type="primary" icon={} size={'large'} onClick={showModal}>
+              申请售后
+            </Button>
+            <OrderForm {...{ open, setOpen }}></OrderForm> */}
+            <Button
+              style={{ marginRight: '10%', marginLeft: '30%' }}
+              type="primary"
+              icon={<DollarOutlined />}
+              size={'large'}
+            >
+              确认收货
+            </Button>
+
+            <Button type="primary" icon={<UserOutlined />} size={'large'} onClick={handleGoBack}>
+              返回个人中心
+            </Button>
+          </span>
+        </div>
+      }
       extraContent={extra}
     >
       <div className={styles.main}>
@@ -96,11 +118,26 @@ const OrderInfo: FC = () => {
           </Card>
         </GridContent>
       </div>
-      <Card bordered={false}>
+      <Card>
+        <Descriptions title="订单信息" style={{ marginBottom: 32 }}>
+          <Descriptions.Item label="订单号">{data?.id}</Descriptions.Item>
+          <Descriptions.Item label="买家id">{data?.buyerId}</Descriptions.Item>
+          <Descriptions.Item label="卖家id">{data?.sellerId}</Descriptions.Item>
+          <Descriptions.Item label="卖家姓名">
+            <Avatar size="small" className={styles.avatar} src={data?.item.ownerUrl} alt="avatar" />
+            <span style={{ marginLeft: '10px' }}>{data?.item.ownerName}</span>
+          </Descriptions.Item>
+          <Descriptions.Item label="上架时间">{data?.createTime} </Descriptions.Item>
+          <Descriptions.Item label="下单时间">{data?.updateTime}</Descriptions.Item>
+        </Descriptions>
+        <Divider style={{ marginBottom: 32 }} />
         <Descriptions title="商品信息" style={{ marginBottom: 32 }}>
           <Descriptions.Item label="商品名称">{data?.item.itemName}</Descriptions.Item>
-          <Descriptions.Item label="商品ID">1</Descriptions.Item>
-          <Descriptions.Item label="商品图片">1</Descriptions.Item>
+          <Descriptions.Item label="商品描述">{data?.item.description}</Descriptions.Item>
+          <Descriptions.Item label="商品价格">¥ {data?.item.price}</Descriptions.Item>
+          <Descriptions.Item label="商品图片">
+            <Image width={200} src={data?.item.imgUrl} />
+          </Descriptions.Item>
         </Descriptions>
         <Divider style={{ marginBottom: 32 }} />
       </Card>

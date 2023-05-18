@@ -5,7 +5,7 @@ export type Member = {
 };
 
 export type Params = {
-  keyword?: string;
+  description?: string;
   // 其他已有属性
 };
 

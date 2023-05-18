@@ -88,7 +88,7 @@ const Comments: React.FC = () => {
             <div className={stylesApplications.cardInfo}>
               <div>
                 <p>评价：</p>
-                <p>{item.centent}</p>
+                <p>{item.content}</p>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <p>

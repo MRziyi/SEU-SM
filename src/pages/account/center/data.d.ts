@@ -27,7 +27,8 @@ export type CommentData = {
   fromUserName: string;
   fromUserUrl: string;
   rank: number;
-  centent: string;
+  content: string;
+  commentTime: string;
 };
 
 export type OrderData = {

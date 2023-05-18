@@ -56,7 +56,7 @@ const Projects: FC = () => {
   };
 
   const handleFormSubmit = async (value: string) => {
-    const result = await searchList({ keyword: value });
+    const result = await searchList({ description: value });
     setListData(result.data.list);
     setTotalNum(result.data.totalNum);
   };
