@@ -1,5 +1,5 @@
 import { PageContainer } from '@ant-design/pro-layout';
-import { Image, Card, Descriptions, Divider, Rate, Button, Input, Avatar } from 'antd';
+import { Image, Card, Descriptions, Divider, Rate, Button, Avatar } from 'antd';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { useHistory, useParams, useRequest } from 'umi';

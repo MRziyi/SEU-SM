@@ -78,7 +78,7 @@ export default defineConfig({
         },
         {
           path: '/profile/item-info/:itemId',
-          component: './profile/itemInfo',
+          component: './profile/ItemInfo',
           name: '商品详情',
           icon: 'book',
           layout: false,
