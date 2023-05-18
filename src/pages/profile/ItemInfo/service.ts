@@ -8,6 +8,10 @@ export async function queryItemInfo(itemIdPara: any): Promise<{
   };
 }> {
   return request('/api/item/info', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     data: {
       itemId: itemIdPara,
     },

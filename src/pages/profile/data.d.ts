@@ -30,11 +30,12 @@ export type CurrentUser = {
   phone: string;
   credit: number;
 };
+
 export type OrderData = {
   id: string;
   item: ItemData;
-  buyerld: string;
-  sellerld: string;
+  buyerId: string;
+  sellerId: string;
   state: number;
   createTime: string;
   updateTime: string;

@@ -1,6 +1,6 @@
 import { PageContainer } from '@ant-design/pro-layout';
 import { Image, Card, Descriptions, Divider, Rate, Button, Avatar, Modal, message } from 'antd';
-import { FC, useRef } from 'react';
+import { useRef } from 'react';
 import { useEffect, useState } from 'react';
 import { useHistory, useParams, useRequest } from 'umi';
 import { queryItemInfo } from './service';
@@ -24,18 +24,16 @@ interface RouteParams {
   itemId: string;
 }
 
-const ItemInfo: FC = () => {
+const ItemInfo: React.FC = () => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [modalText, setModalText] = useState('Content of the modal');
 
   const showModal = () => {
     setOpen(true);
   };
 
   const handleOk = () => {
-    setModalText('The modal will be closed after two seconds');
     setConfirmLoading(true);
     setTimeout(() => {
       setOpen(false);
@@ -53,23 +51,11 @@ const ItemInfo: FC = () => {
   };
 
   const { itemId } = useParams<RouteParams>();
-  const [fetchedItemId, setFetchedItemId] = useState<string | undefined>(itemId);
   const formRef = useRef<ProFormInstance>();
 
-  const { data, loading } = useRequest(
-    () => {
-      return queryItemInfo(fetchedItemId);
-    },
-    {
-      ready: !!fetchedItemId,
-    },
-  );
-
-  useEffect(() => {
-    if (itemId) {
-      setFetchedItemId(itemId);
-    }
-  }, [itemId]);
+  const { data, loading } = useRequest(() => {
+    return queryItemInfo(itemId);
+  });
 
   return (
     <PageContainer

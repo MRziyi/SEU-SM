@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import type { ItemData, CurrentUser } from './data.d';
+import type { CurrentUser } from './data.d';
 
 const itemName = [
   'Alipay',
@@ -48,24 +48,6 @@ const ownerName = [
   '仲尼',
 ];
 
-function fakeItemList(count: number): ItemData[] {
-  const list = [];
-  for (let i = 0; i < count; i += 1) {
-    list.push({
-      itemId: `item-${i}`,
-      itemName: itemName[i % 8],
-      imgUrl: imgUrl[i % 4],
-      ownerId: `owner-${i}`,
-      description: description[i % 5],
-      price: i * 10,
-      status: i,
-      uploadedTime: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i).toString(),
-      ownerName: ownerName[i % 10],
-      ownerUrl: ownerUrl[i % 8],
-    });
-  }
-  return list;
-}
 function fakeUserList(count: number): CurrentUser[] {
   const list = [];
   for (let i = 0; i < count; i += 1) {
@@ -82,17 +64,56 @@ function fakeUserList(count: number): CurrentUser[] {
 }
 
 function getItemInfo(req: Request, res: Response) {
-  const itemResult = fakeItemList(1);
+  const { itemId } = req.body;
+  const itemResult = {
+    itemId: itemId,
+    itemName: itemName[1 % 8],
+    imgUrl: imgUrl[1 % 4],
+    ownerId: 'owner-' + 1,
+    description: description[1 % 5],
+    price: 1 * 10,
+    status: 1,
+    uploadedTime: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * 1).toString(),
+    ownerName: ownerName[1 % 10],
+    ownerUrl: ownerUrl[1 % 8],
+  };
   const ownerResult = fakeUserList(1);
   return res.json({
     code: 0,
     data: {
-      itemInfo: itemResult[0],
+      itemInfo: itemResult,
       ownerInfo: ownerResult[0],
     },
   });
 }
 
+function getOrderInfo(req: Request, res: Response) {
+  return res.json({
+    code: 0,
+    data: {
+      id: 'order-' + 1,
+      buyerId: 'buyer-' + 1,
+      sellerId: 'seller-' + 1,
+      state: 1,
+      updateTime: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * 1).toString(),
+      createTime: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * 1).toString(),
+      item: {
+        itemId: 'item-' + 1,
+        itemName: itemName[1 % 8],
+        imgUrl: imgUrl[1 % 4],
+        ownerId: 'owner-' + 1,
+        description: description[1 % 5],
+        price: 1 * 10,
+        status: 1,
+        uploadedTime: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * 1).toString(),
+        ownerName: ownerName[1 % 10],
+        ownerUrl: ownerUrl[1 % 8],
+      },
+    },
+  });
+}
+
 export default {
-  'GET /api/item/info': getItemInfo,
+  'POST /api/item/info': getItemInfo,
+  'POST /api/order/info': getOrderInfo,
 };

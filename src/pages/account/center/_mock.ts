@@ -48,14 +48,14 @@ const ownerName = [
   '仲尼',
 ];
 
-function fakeList(count: number): ItemData[] {
+function fakeItemList(count: number): ItemData[] {
   const list = [];
   for (let i = 0; i < count; i += 1) {
     list.push({
-      itemId: i,
+      itemId: 'item-' + i,
       itemName: itemName[i % 8],
       imgUrl: imgUrl[i % 4],
-      ownerId: i,
+      ownerId: 'owner-' + i,
       description: description[i % 5],
       price: i * 10,
       status: i,
@@ -86,17 +86,17 @@ function fakeOrderList(count: number): OrderData[] {
   const list = [];
   for (let i = 0; i < count; i += 1) {
     list.push({
-      id: 'i',
-      buyerld: 'i',
-      sellerld: 'i',
+      id: 'order-' + i,
+      buyerId: 'buyer-' + i,
+      sellerId: 'seller-' + i,
       state: 1,
       updateTime: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i).toString(),
       createTime: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i).toString(),
       item: {
-        itemId: i,
+        itemId: 'item-' + i,
         itemName: itemName[i % 8],
         imgUrl: imgUrl[i % 4],
-        ownerId: i,
+        ownerId: 'owner-' + i,
         description: description[i % 5],
         price: i * 10,
         status: i,
@@ -106,12 +106,11 @@ function fakeOrderList(count: number): OrderData[] {
       },
     });
   }
-
   return list;
 }
 
-function getMyList(req: Request, res: Response) {
-  const result = fakeList(18);
+function getItemList(req: Request, res: Response) {
+  const result = fakeItemList(18);
   return res.json({
     code: 0,
     data: {
@@ -144,7 +143,7 @@ function getCommentList(req: Request, res: Response) {
 }
 
 export default {
-  'GET  /api/item/listMy': getMyList,
+  'GET  /api/item/listMy': getItemList,
   'GET  /api/order/list': getOrderList,
   'GET  /api/comment/list': getCommentList,
 };

@@ -48,7 +48,7 @@ const ownerName = [
   '仲尼',
 ];
 
-function fakeList(count: number): ItemData[] {
+function fakeItemList(count: number): ItemData[] {
   const list = [];
   for (let i = 0; i < count; i += 1) {
     list.push({
@@ -64,29 +64,16 @@ function fakeList(count: number): ItemData[] {
       ownerUrl: ownerUrl[i % 8],
     });
   }
-
   return list;
 }
 
-function getFakeList(req: Request, res: Response) {
-  const result = fakeList(30);
+function getFakeItemList(req: Request, res: Response) {
+  const result = fakeItemList(30);
   return res.json({
     code: 0,
     data: {
       totalNum: 30,
       list: result,
-    },
-  });
-}
-
-function getItemInfo(req: Request, res: Response) {
-  const result = fakeList(1);
-  result[0].itemId = req.body.itemId;
-  return res.json({
-    code: 0,
-    data: {
-      totalNum: 30,
-      list: result[0],
     },
   });
 }
@@ -99,28 +86,27 @@ const waitTime = (time: number = 100) => {
   });
 };
 
+function publishItem(req: Request, res: Response) {
+  waitTime(1000);
+  const { _imgUrl } = req.body;
+  if (_imgUrl === 'http://test_for_upload')
+    res.send({
+      data: {
+        ok: 1,
+      },
+      code: 0,
+    });
+  else
+    res.send({
+      data: {
+        ok: imgUrl,
+      },
+      code: 0,
+    });
+  return;
+}
+
 export default {
-  'GET  /api/item/list': getFakeList,
-
-  'GET /api/item/info': getItemInfo,
-
-  'POST /api/item/create': async (req: Request, res: Response) => {
-    await waitTime(1000);
-    const { _imgUrl } = req.body;
-    if (_imgUrl === 'http://test_for_upload')
-      res.send({
-        data: {
-          ok: 1,
-        },
-        code: 0,
-      });
-    else
-      res.send({
-        data: {
-          ok: imgUrl,
-        },
-        code: 0,
-      });
-    return;
-  },
+  'GET  /api/item/list': getFakeItemList,
+  'POST /api/item/create': publishItem,
 };

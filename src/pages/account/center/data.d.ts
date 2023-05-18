@@ -10,10 +10,10 @@ export type CurrentUser = {
 };
 
 export interface ItemData {
-  itemId: number;
+  itemId: string;
   itemName: string;
   imgUrl: string;
-  ownerId: number;
+  ownerId: string;
   description: string;
   price: number;
   status: number;
@@ -28,4 +28,14 @@ export type CommentData = {
   fromUserUrl: string;
   rank: number;
   centent: string;
+};
+
+export type OrderData = {
+  id: string;
+  item: ItemData;
+  buyerId: string;
+  sellerId: string;
+  state: number;
+  createTime: string;
+  updateTime: string;
 };

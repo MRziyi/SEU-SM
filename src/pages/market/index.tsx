@@ -77,8 +77,8 @@ const Projects: FC = () => {
       pagination={paginationProps}
       dataSource={listData}
       renderItem={(item) => (
-        <Link to={`/profile/item-info/${item.itemId}`}>
-          <List.Item>
+        <List.Item>
+          <Link to={`/profile/item-info/${item.itemId}`}>
             <Card
               className={styles.card}
               hoverable
@@ -126,8 +126,8 @@ const Projects: FC = () => {
                 <span>{moment(item.uploadedTime).fromNow()}</span>
               </div>
             </Card>
-          </List.Item>
-        </Link>
+          </Link>
+        </List.Item>
       )}
     />
   );
@@ -167,7 +167,7 @@ const Projects: FC = () => {
           <Card bordered={false}>
             <Form
               layout="inline"
-              onValuesChange={(_, values) => {
+              onValuesChange={() => {
                 // 表单项变化时请求数据
                 // 模拟查询表单生效
                 run();

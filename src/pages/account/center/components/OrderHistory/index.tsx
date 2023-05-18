@@ -15,7 +15,7 @@ const OrderHistory: React.FC = () => {
   const [totalNum, setTotalNum] = useState<number>(0);
   // 获取列表数据
   const { loading } = useRequest(
-    (values: any) => {
+    () => {
       return queryOrderList();
     },
     {
@@ -53,33 +53,35 @@ const OrderHistory: React.FC = () => {
       grid={{ gutter: 24, xxl: 3, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
       pagination={paginationProps}
       dataSource={listData}
-      renderItem={(item) => (
-        <Link to={`/order/order-info/${item.id}`}>
-          <List.Item>
+      renderItem={(order) => (
+        <List.Item>
+          <Link to={`/profile/order-info/${order.id}`}>
             <Card
               className={styles.card}
               hoverable
-              cover={<img alt={item.item.itemName} src={item.item.imgUrl} />}
+              cover={<img alt={order.item.itemName} src={order.item.imgUrl} />}
             >
               <Card.Meta
-                title={<a>{item.item.itemName}</a>}
-                description={<Paragraph className={styles.item}>{item.item.description}</Paragraph>}
+                title={<a>{order.item.itemName}</a>}
+                description={
+                  <Paragraph className={styles.item}>{order.item.description}</Paragraph>
+                }
               />
               <div className={styles.cardItemContent}>
-                <span>{moment(item.item.uploadedTime).fromNow()}</span>
+                <span>{moment(order.createTime).fromNow()}</span>
                 <div className={styles.avatarList}>
-                  <span style={{ marginRight: 10 }}>{item.item.ownerName}</span>
+                  <span style={{ marginRight: 10 }}>{order.item.ownerName}</span>
                   <Avatar
                     size="small"
                     className={styles.avatar}
-                    src={item.item.ownerUrl}
+                    src={order.item.ownerUrl}
                     alt="avatar"
                   />
                 </div>
               </div>
             </Card>
-          </List.Item>
-        </Link>
+          </Link>
+        </List.Item>
       )}
     />
   );
