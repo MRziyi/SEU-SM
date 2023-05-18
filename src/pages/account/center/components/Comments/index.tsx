@@ -43,7 +43,7 @@ const Comments: React.FC = () => {
 
   // 获取tab列表数据
   const { loading } = useRequest(
-    (values: any) => {
+    () => {
       return queryCommentList();
     },
     {

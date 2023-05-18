@@ -6,6 +6,7 @@ import { useRequest } from 'umi';
 import type { RouteChildrenProps } from 'react-router';
 import OrderHistory from './components/OrderHistory';
 import Comments from './components/Comments';
+import MyPublish from './components/MyPublish';
 import type { CurrentUser, tabKeyType } from './data.d';
 import { queryCurrent } from './service';
 import styles from './Center.less';
@@ -80,13 +81,13 @@ const Center: React.FC<RouteChildrenProps> = () => {
   // 渲染tab切换
   const renderChildrenByTabKey = (tabValue: tabKeyType) => {
     if (tabValue === 'orderHistory') {
-      return <OrderHistory key="orderHistory" listType="orderHistory" />;
+      return <OrderHistory key="orderHistory" />;
     }
     if (tabValue === 'myPublish') {
-      return <OrderHistory key="myPublish" listType="myPublish" />;
+      return <MyPublish key="myPublish" />;
     }
     if (tabValue === 'comments') {
-      return <Comments key="comments" />;
+      return <Comments key="comment" />;
     }
     return null;
   };

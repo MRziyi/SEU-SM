@@ -22,10 +22,10 @@ export interface ItemData {
   ownerUrl: string;
 }
 
-export interface CommentData {
+export type CommentData = {
   commentId: number;
   fromUserName: string;
   fromUserUrl: string;
   rank: number;
   centent: string;
-}
+};

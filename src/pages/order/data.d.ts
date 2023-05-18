@@ -9,7 +9,7 @@ export type Params = {
   // 其他已有属性
 };
 
-export type ItemData = {
+export interface ItemData {
   itemId: string;
   itemName: string;
   imgUrl: string;
@@ -20,7 +20,7 @@ export type ItemData = {
   uploadedTime: string;
   ownerName: string;
   ownerUrl: string;
-};
+}
 
 export type CurrentUser = {
   nickName: string;
