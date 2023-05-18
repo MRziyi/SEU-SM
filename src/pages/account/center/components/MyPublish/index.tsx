@@ -2,24 +2,24 @@ import { Avatar, Card, List, Typography } from 'antd';
 import { useRequest, Link } from 'umi';
 import React, { useState } from 'react';
 import moment from 'moment';
-import { queryOrderList } from '../../service';
-import type { OrderData } from '../../data';
+import { queryItemList } from '../../service';
+import type { ItemData } from '../../data';
 import styles from './index.less';
 
 const { Paragraph } = Typography;
 
-const OrderHistory: React.FC = () => {
+const MyPublish: React.FC = () => {
   const [pageSize, setPageSize] = useState<number>(6);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [listData, setListData] = useState<OrderData[]>([]);
+  const [listData, setListData] = useState<ItemData[]>([]);
   const [totalNum, setTotalNum] = useState<number>(0);
   // 获取列表数据
   const { loading } = useRequest(
-    (values: any) => {
-      return queryOrderList();
+    () => {
+      return queryItemList();
     },
     {
-      onSuccess: (result: any) => {
+      onSuccess: (result) => {
         setTotalNum(result.totalNum);
         setListData(result.list);
       },
@@ -46,35 +46,30 @@ const OrderHistory: React.FC = () => {
   };
 
   return (
-    <List<OrderData>
+    <List<ItemData>
       className={styles.coverCardList}
-      rowKey="id"
+      rowKey="itemId"
       loading={loading}
       grid={{ gutter: 24, xxl: 3, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
       pagination={paginationProps}
       dataSource={listData}
       renderItem={(item) => (
-        <Link to={`/order/order-info/${item.id}`}>
+        <Link to={`/order/order-info/${item.itemId}`}>
           <List.Item>
             <Card
               className={styles.card}
               hoverable
-              cover={<img alt={item.item.itemName} src={item.item.imgUrl} />}
+              cover={<img alt={item.itemName} src={item.imgUrl} />}
             >
               <Card.Meta
-                title={<a>{item.item.itemName}</a>}
-                description={<Paragraph className={styles.item}>{item.item.description}</Paragraph>}
+                title={<a>{item.itemName}</a>}
+                description={<Paragraph className={styles.item}>{item.description}</Paragraph>}
               />
               <div className={styles.cardItemContent}>
-                <span>{moment(item.item.uploadedTime).fromNow()}</span>
+                <span>{moment(item.uploadedTime).fromNow()}</span>
                 <div className={styles.avatarList}>
-                  <span style={{ marginRight: 10 }}>{item.item.ownerName}</span>
-                  <Avatar
-                    size="small"
-                    className={styles.avatar}
-                    src={item.item.ownerUrl}
-                    alt="avatar"
-                  />
+                  <span style={{ marginRight: 10 }}>{item.ownerName}</span>
+                  <Avatar size="small" className={styles.avatar} src={item.ownerUrl} alt="avatar" />
                 </div>
               </div>
             </Card>
@@ -85,4 +80,4 @@ const OrderHistory: React.FC = () => {
   );
 };
 
-export default OrderHistory;
+export default MyPublish;
