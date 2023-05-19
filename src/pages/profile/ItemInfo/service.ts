@@ -17,3 +17,15 @@ export async function queryItemInfo(itemIdPara: any): Promise<{
     },
   });
 }
+
+export function SendOrderInfo(OrderPara: any) {
+  return request('/api/item/info', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: {
+      itemId: OrderPara,
+    },
+  });
+}

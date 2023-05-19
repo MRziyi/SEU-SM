@@ -40,3 +40,9 @@ export type OrderData = {
   createTime: string;
   updateTime: string;
 };
+
+/*export type SubmitOrder = {
+  itemId: string; //标识对应的item
+  receiveName: string; //收货姓名不一定是NickName，参考京东淘宝
+  receiveTelephone: string;
+};*/

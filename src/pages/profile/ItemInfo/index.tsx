@@ -32,10 +32,13 @@ const ItemInfo: React.FC = () => {
   const { data, loading } = useRequest(() => {
     return queryItemInfo(itemId);
   });
+  const [passId, setItemId] = useState('');
 
   const [open, setOpen] = useState(false);
   function showModal() {
     setOpen(true);
+    setItemId(itemId);
+    console.log(itemId);
   }
 
   const contentForCustomer = (
@@ -44,7 +47,7 @@ const ItemInfo: React.FC = () => {
         <Button type="primary" icon={<DollarOutlined />} size={'large'} onClick={showModal}>
           立即下单
         </Button>
-        <OrderForm {...{ open, setOpen }}></OrderForm>
+        <OrderForm {...{ open, setOpen, passId }}></OrderForm>
         <Button
           style={{ marginRight: '10%', marginLeft: '10%' }}
           type="primary"

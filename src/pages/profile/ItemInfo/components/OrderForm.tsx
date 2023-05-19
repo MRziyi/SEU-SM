@@ -1,34 +1,56 @@
 import ProCard from '@ant-design/pro-card';
 import {
+  ProFormInstance,
   ProForm,
   ProFormCheckbox,
   ProFormDatePicker,
   ProFormDateRangePicker,
-  ProFormInstance,
   ProFormSelect,
   ProFormText,
   ProFormTextArea,
   StepsForm,
+  ProFormRadio,
 } from '@ant-design/pro-form';
 import { Modal, message } from 'antd';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+
+const waitTime = (time: number = 100) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, time);
+  });
+};
 
 interface modalCtrl {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  passId: string;
 }
 
-const OrderForm: React.FC<modalCtrl> = ({ open, setOpen }) => {
+const OrderForm: React.FC<modalCtrl> = ({ open, setOpen, passId }) => {
   const formRef = useRef<ProFormInstance>();
-
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const handleOk = () => {
+  const [method1, setMethod1] = useState('');
+  const [method2, setMethod2] = useState('');
+
+  /*const handleOk = () => {
     setConfirmLoading(true);
     setTimeout(() => {
       setOpen(false);
       setConfirmLoading(false);
     }, 2000);
+  };*/
+  useEffect(() => {
+    console.log(passId);
+    console.log(passId);
+  }, [passId]);
+  const handleRadioChange1 = (e: any) => {
+    setMethod1(e.target.value); //这个是用来控制 面交,代方,其他的状态量
+  };
+  const handleRadioChange2 = (e: any) => {
+    setMethod2(e.target.value); //这个是用来控制微信or支付宝的状态量
   };
 
   const handleCancel = () => {
@@ -41,8 +63,9 @@ const OrderForm: React.FC<modalCtrl> = ({ open, setOpen }) => {
       title="立即下单"
       width={700}
       open={open}
-      onOk={handleOk}
+      //onOk={handleOk}
       confirmLoading={confirmLoading}
+      okButtonProps={{ style: { display: 'none' } }}
       onCancel={handleCancel}
     >
       <ProCard>
@@ -50,8 +73,28 @@ const OrderForm: React.FC<modalCtrl> = ({ open, setOpen }) => {
           name: string;
         }>
           formRef={formRef}
-          onFinish={async () => {
-            message.success('提交成功');
+          onFinish={async (values) => {
+            await waitTime(2000);
+            try {
+              // 发送表单数据到服务器
+              const response = await fetch('/api/order/create', {
+                method: 'POST',
+                body: JSON.stringify({ ...values, passId }),
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
+              if (response.ok) {
+                message.success('提交成功');
+                handleCancel();
+                // 执行其他操作...
+              } else {
+                message.error('提交失败');
+              }
+            } catch (error) {
+              message.error('提交出错');
+              console.error(error);
+            }
           }}
           formProps={{
             validateMessages: {
@@ -62,102 +105,102 @@ const OrderForm: React.FC<modalCtrl> = ({ open, setOpen }) => {
           <StepsForm.StepForm<{
             name: string;
           }>
-            name="base"
-            title="创建实验"
+            name="buyer"
+            title="收货人信息"
             stepProps={{
-              description: '这里填入的都是基本信息',
-            }}
-            onFinish={async () => {
-              console.log(formRef.current?.getFieldsValue());
-            }}
-          >
-            <ProFormText
-              name="name"
-              label="实验名称"
-              width="md"
-              tooltip="最长为 24 位，用于标定的唯一 id"
-              placeholder="请输入名称"
-              rules={[{ required: true }]}
-            />
-            <ProFormDatePicker name="date" label="日期" />
-            <ProFormDateRangePicker name="dateTime" label="时间区间" />
-            <ProFormTextArea name="remark" label="备注" width="lg" placeholder="请输入备注" />
-          </StepsForm.StepForm>
-          <StepsForm.StepForm<{
-            checkbox: string;
-          }>
-            name="checkbox"
-            title="设置参数"
-            stepProps={{
-              description: '这里填入运维参数',
+              description: '这里填入收货人信息',
             }}
             onFinish={async () => {
               console.log(formRef.current?.getFieldsValue());
               return true;
             }}
           >
-            <ProFormCheckbox.Group
-              name="checkbox"
-              label="迁移类型"
-              width="lg"
-              options={['结构迁移', '全量迁移', '增量迁移', '全量校验']}
+            <ProFormText
+              name="name"
+              label="收货姓名"
+              width="md"
+              tooltip="最长为6位"
+              placeholder="请输入名称"
+              rules={[{ required: true }]}
             />
-            <ProForm.Group>
-              <ProFormText name="dbname" label="业务 DB 用户名" />
-              <ProFormDatePicker name="datetime" label="记录保存时间" width="sm" />
-              <ProFormCheckbox.Group
-                name="checkbox"
-                label="迁移类型"
-                options={['完整 LOB', '不同步 LOB', '受限制 LOB']}
-              />
-            </ProForm.Group>
+            <ProFormText
+              name="tel"
+              label="联系电话"
+              width="md"
+              tooltip="最长为 24 位"
+              placeholder="请输入电话"
+              rules={[{ required: true }]}
+            />
+            <ProFormTextArea name="remark" label="备注" width="lg" placeholder="请输入备注" />
           </StepsForm.StepForm>
-          <StepsForm.StepForm
-            name="time"
-            title="发布实验"
+          <StepsForm.StepForm<{
+            checkbox: string;
+          }>
+            name="hand"
+            title="交付信息"
             stepProps={{
-              description: '这里填入发布判断',
+              description: '这里填入交付信息',
+            }}
+            onFinish={async () => {
+              console.log(formRef.current?.getFieldsValue());
+              return true;
             }}
           >
-            <ProFormCheckbox.Group
-              name="checkbox"
-              label="部署单元"
+            <ProFormRadio.Group
+              name="place"
+              label="交付地点"
+              options={['梅园', '桃园', '橘园', '教学楼']}
+            />
+            <ProFormRadio.Group
+              name="method"
+              label="交付方式"
+              options={['代放', '面交', '其他']}
+              fieldProps={{
+                value: method1,
+                onChange: handleRadioChange1,
+              }}
+            />
+            {method1 === '其他' && (
+              <ProFormText name="other" label="其他交付方式" placeholder="请输入其他交付方式" />
+            )}
+            <ProFormDatePicker name="date" label="日期" />
+            <ProFormText name="time" label="时间" tooltip="24小时制" />
+          </StepsForm.StepForm>
+          <StepsForm.StepForm
+            name="pay"
+            title="支付"
+            stepProps={{
+              description: '这里进行支付',
+            }}
+          >
+            <ProFormRadio.Group
+              name="choosepay"
+              label="支付方式"
               rules={[
                 {
                   required: true,
                 },
               ]}
-              options={['部署单元1', '部署单元2', '部署单元3']}
+              options={['微信', '支付宝']}
+              fieldProps={{
+                value: method2,
+                onChange: handleRadioChange2,
+              }}
             />
-            <ProFormSelect
-              label="部署分组策略"
-              name="remark"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-              initialValue="1"
-              options={[
-                {
-                  value: '1',
-                  label: '策略一',
-                },
-                { value: '2', label: '策略二' },
-              ]}
-            />
-            <ProFormSelect
-              label="Pod 调度策略"
-              name="remark2"
-              initialValue="2"
-              options={[
-                {
-                  value: '1',
-                  label: '策略一',
-                },
-                { value: '2', label: '策略二' },
-              ]}
-            />
+            {method2 === '微信' && (
+              <img
+                src="https://i.328888.xyz/2023/05/19/VfzIDH.png"
+                alt="微信"
+                style={{ width: '200px', height: '200px' }}
+              />
+            )}
+            {method2 === '支付宝' && (
+              <img
+                src="https://i.328888.xyz/2023/05/19/Vf62fV.png"
+                alt="微信"
+                style={{ width: '200px', height: '200px' }}
+              />
+            )}
           </StepsForm.StepForm>
         </StepsForm>
       </ProCard>

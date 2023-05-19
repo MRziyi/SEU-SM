@@ -86,7 +86,7 @@ export default defineConfig({
         {
           path: '/profile/order-info/:orderId',
           name: '历史订单',
-          icon: 'book',
+          icon: 'ClockCircle',
           component: './profile/orderInfo',
         },
       ],
