@@ -91,16 +91,12 @@ function publishItem(req: Request, res: Response) {
   const { _imgUrl } = req.body;
   if (_imgUrl === 'http://test_for_upload')
     res.send({
-      data: {
-        ok: 1,
-      },
+      data: 1,
       code: 0,
     });
   else
     res.send({
-      data: {
-        ok: imgUrl,
-      },
+      data: 1,
       code: 0,
     });
   return;

@@ -95,8 +95,8 @@ function getOrderInfo(req: Request, res: Response) {
       buyerId: 'buyer-' + 1,
       sellerId: 'seller-' + 1,
       state: 1,
-      updateTime: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * 1).toString(),
-      createTime: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * 1).toString(),
+      createTime: new Date(new Date().getTime() - 2000 * 60 * 60 * 2 * 1).toString(),
+      deliveryTime: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * 1).toString(),
       item: {
         itemId: 'item-' + 1,
         itemName: itemName[1 % 8],
@@ -109,11 +109,35 @@ function getOrderInfo(req: Request, res: Response) {
         ownerName: ownerName[1 % 10],
         ownerUrl: ownerUrl[1 % 8],
       },
+      payment: '微信支付',
+      delivery: '面交',
+      name: '小张',
+      tel: '18777777777',
+      position: '教学楼-J2 201门口',
+      remark: '记得带盒子',
     },
   });
+}
+
+const waitTime = (time: number = 100) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, time);
+  });
+};
+
+function createOrder(req: Request, res: Response) {
+  waitTime(1000);
+  res.send({
+    data: 1,
+    code: 0,
+  });
+  return;
 }
 
 export default {
   'POST /api/item/info': getItemInfo,
   'POST /api/order/info': getOrderInfo,
+  'POST /api/order/create': createOrder,
 };

@@ -17,8 +17,6 @@ import { GridContent, PageContainer, RouteContext } from '@ant-design/pro-layout
 import styles from './style.less';
 import { DollarOutlined, UserOutlined } from '@ant-design/icons';
 
-const orderState = ['已下单', '已付款', '已发货', '已签收'];
-
 interface RouteParams {
   orderId: string;
 }
@@ -122,13 +120,18 @@ const OrderInfo: FC = () => {
         <Descriptions title="订单信息" style={{ marginBottom: 32 }}>
           <Descriptions.Item label="订单号">{data?.id}</Descriptions.Item>
           <Descriptions.Item label="买家id">{data?.buyerId}</Descriptions.Item>
+          <Descriptions.Item label="收货人姓名">{data?.name}</Descriptions.Item>
+          <Descriptions.Item label="收货人电话">{data?.tel}</Descriptions.Item>
           <Descriptions.Item label="卖家id">{data?.sellerId}</Descriptions.Item>
           <Descriptions.Item label="卖家姓名">
             <Avatar size="small" className={styles.avatar} src={data?.item.ownerUrl} alt="avatar" />
             <span style={{ marginLeft: '10px' }}>{data?.item.ownerName}</span>
           </Descriptions.Item>
-          <Descriptions.Item label="上架时间">{data?.createTime} </Descriptions.Item>
-          <Descriptions.Item label="下单时间">{data?.updateTime}</Descriptions.Item>
+          <Descriptions.Item label="下单时间">{data?.createTime} </Descriptions.Item>
+          <Descriptions.Item label="交付时间">{data?.deliveryTime}</Descriptions.Item>
+          <Descriptions.Item label="支付方式">{data?.payment}</Descriptions.Item>
+          <Descriptions.Item label="交易地点">{data?.position}</Descriptions.Item>
+          <Descriptions.Item label="订单备注">{data?.remark}</Descriptions.Item>
         </Descriptions>
         <Divider style={{ marginBottom: 32 }} />
         <Descriptions title="商品信息" style={{ marginBottom: 32 }}>

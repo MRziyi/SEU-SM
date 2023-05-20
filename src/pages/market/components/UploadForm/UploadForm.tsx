@@ -68,7 +68,7 @@ const UploadForm: React.FC<formButton> = ({ btn }) => {
       onFinish={async (values) => {
         try {
           const response = await request<{
-            data: API.PublishResult;
+            data: boolean;
           }>('/api/item/create', {
             method: 'POST',
             headers: {
@@ -76,7 +76,7 @@ const UploadForm: React.FC<formButton> = ({ btn }) => {
             },
             data: values,
           });
-          if (response.data.ok) {
+          if (response.data) {
             message.success('提交成功');
             return true;
           } else {
