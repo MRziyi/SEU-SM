@@ -160,14 +160,14 @@ const OrderForm: React.FC<modalCtrl> = ({ open, setOpen, itemIdPara }) => {
                 onChange: changePaymentMethod,
               }}
             />
-            {method2 === '微信' && (
+            {method2 === '微信支付' && (
               <Image
                 src="https://i.328888.xyz/2023/05/19/VfzIDH.png"
                 alt="微信付款码"
                 style={{ width: '200px', height: '200px' }}
               />
             )}
-            {method2 === '支付宝' && (
+            {method2 === '支付宝支付' && (
               <Image
                 src="https://i.328888.xyz/2023/05/19/Vf62fV.png"
                 alt="支付宝付款码"
