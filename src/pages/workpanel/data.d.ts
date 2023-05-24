@@ -1,15 +1,15 @@
-export type Member = {
-  avatar: string;
-  name: string;
-  id: string;
+export type tabKeyType = 'reviewProducts' | 'arbitration';
+
+export type CurrentUser = {
+  nickName?: string;
+  id?: string;
+  imgUrl?: string;
+  privilege?: string;
+  phone?: string;
+  credit: number;
 };
 
-export type Params = {
-  keyword: string;
-  // 其他已有属性
-};
-
-export type ItemData = {
+export interface ItemData {
   itemId: string;
   itemName: string;
   imgUrl: string;
@@ -20,15 +20,15 @@ export type ItemData = {
   uploadedTime: string;
   ownerName: string;
   ownerUrl: string;
-};
+}
 
-export type CurrentUser = {
-  nickName: string;
-  id: string;
-  imgUrl: string;
-  access: string;
-  phone: string;
-  credit: number;
+export type CommentData = {
+  commentId: number;
+  fromUserName: string;
+  fromUserUrl: string;
+  rank: number;
+  content: string;
+  commentTime: string;
 };
 
 export type OrderData = {

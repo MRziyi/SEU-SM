@@ -6,7 +6,7 @@ declare namespace API {
     nickName?: string;
     id?: string;
     imgUrl?: string;
-    privilege?: string;
+    access?: string;
     phone?: string;
     credit: number;
   };

@@ -1,7 +1,7 @@
 import { Avatar, Button, Card, Col, Form, List, Row, Select, Typography } from 'antd';
 import moment from 'moment';
 import type { FC } from 'react';
-import { Link, useRequest } from 'umi';
+import { Link, useModel, useRequest } from 'umi';
 import StandardFormRow from './components/StandardFormRow';
 import TagSelect from './components/TagSelect';
 import type { ItemData } from './data.d';
@@ -138,6 +138,18 @@ const Projects: FC = () => {
       sm: { span: 16 },
     },
   };
+  //  获取用户信息
+  const { initialState } = useModel('@@initialState');
+
+  const uploadForm = (
+    <UploadForm
+      btn={
+        <Button type="primary" icon={<ShopOutlined />} size={'large'}>
+          发布闲置
+        </Button>
+      }
+    />
+  );
 
   return (
     <div>
@@ -145,13 +157,7 @@ const Projects: FC = () => {
         content={
           <div style={{ textAlign: 'center' }}>
             <span style={{ marginRight: '10%' }}>
-              <UploadForm
-                btn={
-                  <Button type="primary" icon={<ShopOutlined />} size={'large'}>
-                    发布闲置
-                  </Button>
-                }
-              />
+              {initialState?.currentUser?.access !== 'admin' ? uploadForm : ''}
             </span>
             <Input.Search
               placeholder="请输入"

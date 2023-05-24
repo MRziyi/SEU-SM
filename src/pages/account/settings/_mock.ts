@@ -1,20 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Request, Response } from 'express';
-
-const city = require('./geographic/city.json');
-const province = require('./geographic/province.json');
-
-function getProvince(_: Request, res: Response) {
-  return res.json({
-    data: province,
-  });
-}
-
-function getCity(req: Request, res: Response) {
-  return res.json({
-    data: city[req.params.province],
-  });
-}
 
 function getCurrentUse(req: Request, res: Response) {
   return res.json({
@@ -74,6 +58,4 @@ function getCurrentUse(req: Request, res: Response) {
 export default {
   // 支持值为 Object 和 Array
   'GET  /api/accountSettingCurrentUser': getCurrentUse,
-  'GET  /api/geographic/province': getProvince,
-  'GET  /api/geographic/city/:province': getCity,
 };

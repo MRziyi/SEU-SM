@@ -41,7 +41,7 @@ export default {
         nickName: 'Serati Ma',
         id: 213213001,
         imgUrl: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
-        privilege: getAccess(),
+        access: getAccess(),
         phone: '0752-268888888',
         credit: 80,
       },

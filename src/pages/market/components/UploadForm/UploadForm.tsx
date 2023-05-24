@@ -1,47 +1,20 @@
+import { InboxOutlined } from '@ant-design/icons';
 import {
   ModalForm,
-  ProForm,
-  ProFormItem,
+  ProFormGroup,
   ProFormMoney,
   ProFormText,
   ProFormTextArea,
-  ProFormUploadDragger,
 } from '@ant-design/pro-form';
-import { Form, message } from 'antd';
+import { Form, Upload, message } from 'antd';
 import { request } from 'umi';
 
+const { Dragger } = Upload;
 interface formButton {
   btn?: JSX.Element;
 }
 
 const UploadForm: React.FC<formButton> = ({ btn }) => {
-  const CustomUpload = async (options: { onSuccess?: any; onError?: any; file?: any }) => {
-    //const { file } = options;
-    options.onSuccess({ url: 'http://test_for_upload' }, new Response());
-    // try {
-    //   const response = await request('https://imgloc.com/api/1/upload', {
-    //     method: 'POST',
-    //     data: {
-    //       'image':file
-    //     },
-    //     headers: {
-    //       'X-API-Key':
-    //         'chv_2VWP_9c13ba3726dfdb28bd9bfc3b46d8254fefbf5bf911797ae1b2fd1f26905690479ca8116ccc30677010912eb66f4c7cec3b166f503368e86385625b80991a5fe1',
-    //       'Content-Type': 'multipart/form-data',
-    //     },
-    //   });
-
-    //   if (response.code === 200) {
-    //     options.onSuccess({ url: response.data.url }, new Response());
-    //   } else {
-    //     options.onError(new Error('上传失败'));
-    //   }
-    // } catch (error) {
-    //   console.error('上传图片出错:', error);
-    //   options.onError(error);
-    // }
-  };
-
   const [form] = Form.useForm<{
     itemName: string;
     price: string;
@@ -92,7 +65,7 @@ const UploadForm: React.FC<formButton> = ({ btn }) => {
         console.log('提交失败:', errorInfo);
       }}
     >
-      <ProForm.Group>
+      <ProFormGroup>
         <ProFormText
           style={{ width: '50%' }}
           width="md"
@@ -112,8 +85,8 @@ const UploadForm: React.FC<formButton> = ({ btn }) => {
           min={0}
           rules={[{ required: true }]}
         />
-      </ProForm.Group>
-      <ProForm.Group>
+      </ProFormGroup>
+      <ProFormGroup>
         <ProFormTextArea
           style={{ width: 'md' }}
           width="md"
@@ -123,27 +96,50 @@ const UploadForm: React.FC<formButton> = ({ btn }) => {
           tooltip="推荐写明成色、配件、购买日期等信息"
           rules={[{ required: true }]}
         />
-        <ProFormUploadDragger
-          name="inage"
-          accept="image/*"
-          fieldProps={{
-            customRequest: CustomUpload,
-            onChange: async (info) => {
+        <Form.Item name="imgUrl" label="Switch">
+          <Dragger
+            accept="image/*"
+            customRequest={async (options: any) => {
+              const data = new FormData();
+              data.append('file', options.file);
+              try {
+                const response = await fetch('/api/upload/image', {
+                  method: 'POST',
+                  body: data,
+                });
+                if (response.ok) {
+                  response.json().then((res: any) => {
+                    options.onSuccess({ url: res.data }, new Response());
+                    form.setFieldsValue({ imgUrl: res.data });
+                  });
+                } else {
+                  options.onError(new Error('上传失败'));
+                }
+              } catch (error) {
+                console.error('上传图片出错:', error);
+                options.onError(error);
+              }
+            }}
+            onChange={async (info) => {
               if (info.file.status === 'done') {
                 message.success(`${info.file.name} 上传成功`);
-                form.setFieldsValue({ imgUrl: info.file.response.url });
               } else if (info.file.status === 'error') {
                 message.error(`${info.file.name} 上传失败`);
               }
-            },
-          }}
-          style={{ width: 'md' }}
-          label="商品图片"
-          width="md"
-          rules={[{ required: true }]}
-        />
-      </ProForm.Group>
-      <ProFormItem name="imgUrl" hidden />{' '}
+            }}
+            onDrop={(e) => {
+              console.log('Dropped files', e.dataTransfer.files);
+            }}
+          >
+            <p className="ant-upload-drag-icon">
+              <InboxOutlined />
+            </p>
+            <p className="ant-upload-text" style={{ width: 'md', margin: 20 }}>
+              点击或拖动文件以上传
+            </p>
+          </Dragger>
+        </Form.Item>
+      </ProFormGroup>
     </ModalForm>
   );
 };

@@ -2,13 +2,12 @@ import { ContactsOutlined, ClusterOutlined, PhoneOutlined } from '@ant-design/ic
 import { Card, Col, Divider, Row } from 'antd';
 import React, { useState } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
-import { useRequest } from 'umi';
+import { useModel } from 'umi';
 import type { RouteChildrenProps } from 'react-router';
 import OrderHistory from './components/OrderHistory';
 import Comments from './components/Comments';
 import MyPublish from './components/MyPublish';
 import type { CurrentUser, tabKeyType } from './data.d';
-import { queryCurrent } from './service';
 import styles from './Center.less';
 
 const operationTabList = [
@@ -42,9 +41,7 @@ const Center: React.FC<RouteChildrenProps> = () => {
   const [tabKey, setTabKey] = useState<tabKeyType>('orderHistory');
 
   //  获取用户信息
-  const { data: currentUser, loading } = useRequest(() => {
-    return queryCurrent();
-  });
+  const { initialState, loading } = useModel('@@initialState');
 
   //  渲染用户信息
   const renderUserInfo = ({ id, credit, phone }: Partial<CurrentUser>) => {
@@ -97,13 +94,13 @@ const Center: React.FC<RouteChildrenProps> = () => {
       <Row gutter={24}>
         <Col lg={7} md={24}>
           <Card bordered={false} style={{ marginBottom: 24 }} loading={loading}>
-            {!loading && currentUser && (
+            {!loading && initialState?.currentUser && (
               <div>
                 <div className={styles.avatarHolder}>
-                  <img alt="" src={currentUser.imgUrl} />
-                  <div className={styles.name}>{currentUser.nickName}</div>
+                  <img alt="" src={initialState.currentUser.imgUrl} />
+                  <div className={styles.name}>{initialState.currentUser.nickName}</div>
                 </div>
-                {renderUserInfo(currentUser)}
+                {renderUserInfo(initialState.currentUser)}
                 <Divider dashed />
               </div>
             )}

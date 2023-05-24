@@ -8,7 +8,7 @@ import {
   ProFormDateTimePicker,
 } from '@ant-design/pro-form';
 import { Modal, message, Image } from 'antd';
-import { useRef, useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { request } from 'umi';
 
 interface modalCtrl {
@@ -20,24 +20,24 @@ interface modalCtrl {
 const OrderForm: React.FC<modalCtrl> = ({ open, setOpen, itemIdPara }) => {
   const formRef = useRef<ProFormInstance>();
 
-  const [method1, setMethod1] = useState('');
-  const [method2, setMethod2] = useState('');
+  const [deliveryMethod, setDeliveryMethod] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('');
+  const [show, setShow] = useState(false);
 
-  useEffect(() => {
-    console.log(itemIdPara);
-    console.log(itemIdPara);
-  }, [itemIdPara]);
   const changeDeliveryMethod = (e: any) => {
-    setMethod1(e.target.value); //这个是用来控制 面交,代方,其他的状态量
+    setDeliveryMethod(e.target.value);
   };
   const changePaymentMethod = (e: any) => {
-    setMethod2(e.target.value); //这个是用来控制微信or支付宝的状态量
+    setPaymentMethod(e.target.value);
   };
 
-  const handleCancel = () => {
-    console.log('Clicked cancel button');
-    setOpen(false);
-  };
+  useEffect(() => {
+    setShow(open);
+  }, [open]);
+
+  useEffect(() => {
+    setOpen(show);
+  }, [show]);
 
   return (
     <Modal
@@ -45,7 +45,10 @@ const OrderForm: React.FC<modalCtrl> = ({ open, setOpen, itemIdPara }) => {
       width={700}
       open={open}
       okButtonProps={{ style: { display: 'none' } }}
-      onCancel={handleCancel}
+      onCancel={() => {
+        setShow(false);
+        return true;
+      }}
     >
       <ProCard>
         <StepsForm<{
@@ -56,7 +59,7 @@ const OrderForm: React.FC<modalCtrl> = ({ open, setOpen, itemIdPara }) => {
             try {
               // 发送表单数据到服务器
               const response = await request<{
-                data: boolean;
+                data: number;
               }>('/api/order/create', {
                 method: 'POST',
                 body: JSON.stringify({ ...values, itemIdPara }),
@@ -66,7 +69,7 @@ const OrderForm: React.FC<modalCtrl> = ({ open, setOpen, itemIdPara }) => {
               });
               if (response.data) {
                 message.success('提交成功');
-                handleCancel();
+                setShow(false);
                 // 执行其他操作...
               } else {
                 message.error('提交失败');
@@ -87,10 +90,6 @@ const OrderForm: React.FC<modalCtrl> = ({ open, setOpen, itemIdPara }) => {
           }>
             name="buyer"
             title="收货人信息"
-            onFinish={async () => {
-              console.log(formRef.current?.getFieldsValue());
-              return true;
-            }}
           >
             <ProFormText
               name="name"
@@ -113,10 +112,6 @@ const OrderForm: React.FC<modalCtrl> = ({ open, setOpen, itemIdPara }) => {
           }>
             name="hand"
             title="交付信息"
-            onFinish={async () => {
-              console.log(formRef.current?.getFieldsValue());
-              return true;
-            }}
           >
             <ProFormRadio.Group
               name="position"
@@ -130,7 +125,7 @@ const OrderForm: React.FC<modalCtrl> = ({ open, setOpen, itemIdPara }) => {
               label="交付方式"
               options={['代放', '面交']}
               fieldProps={{
-                value: method1,
+                value: deliveryMethod,
                 onChange: changeDeliveryMethod,
               }}
               rules={[{ required: true }]}
@@ -156,18 +151,18 @@ const OrderForm: React.FC<modalCtrl> = ({ open, setOpen, itemIdPara }) => {
               ]}
               options={['微信支付', '支付宝支付']}
               fieldProps={{
-                value: method2,
+                value: paymentMethod,
                 onChange: changePaymentMethod,
               }}
             />
-            {method2 === '微信' && (
+            {paymentMethod === '微信支付' && (
               <Image
                 src="https://i.328888.xyz/2023/05/19/VfzIDH.png"
                 alt="微信付款码"
                 style={{ width: '200px', height: '200px' }}
               />
             )}
-            {method2 === '支付宝' && (
+            {paymentMethod === '支付宝支付' && (
               <Image
                 src="https://i.328888.xyz/2023/05/19/Vf62fV.png"
                 alt="支付宝付款码"

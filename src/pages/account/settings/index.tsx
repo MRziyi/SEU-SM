@@ -2,7 +2,6 @@ import React, { useState, useRef, useLayoutEffect } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
 import { Menu } from 'antd';
 import BaseView from './components/base';
-import NotificationView from './components/notification';
 import styles from './style.less';
 
 const { Item } = Menu;
@@ -16,7 +15,6 @@ type SettingsState = {
 const Settings: React.FC = () => {
   const menuMap: Record<string, React.ReactNode> = {
     base: '基本设置',
-    notification: '新消息通知',
   };
 
   const [initConfig, setInitConfig] = useState<SettingsState>({
@@ -61,8 +59,6 @@ const Settings: React.FC = () => {
     switch (selectKey) {
       case 'base':
         return <BaseView />;
-      case 'notification':
-        return <NotificationView />;
       default:
         return null;
     }

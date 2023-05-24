@@ -8,7 +8,6 @@ import { login } from '@/services/ant-design-pro/api';
 import styles from './index.less';
 
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
 
@@ -43,14 +42,11 @@ const Login: React.FC = () => {
         return;
       }
       console.log(msg);
-      // 如果失败去设置用户错误信息
-      setUserLoginState(msg.data);
     } catch (error) {
       // const defaultLoginFailureMessage = '登录失败，请重试！';
       // message.error(defaultLoginFailureMessage);
     }
   };
-  const { type: loginType } = userLoginState;
   return (
     <div className={styles.container}>
       <div className={styles.content}>

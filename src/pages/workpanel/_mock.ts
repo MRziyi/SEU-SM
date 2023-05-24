@@ -127,17 +127,6 @@ function getItemList(req: Request, res: Response) {
   });
 }
 
-function getOrderList(req: Request, res: Response) {
-  const result = fakeOrderList(36);
-  return res.json({
-    code: 0,
-    data: {
-      totalNum: 36,
-      list: result,
-    },
-  });
-}
-
 function getCommentList(req: Request, res: Response) {
   const result = fakeCommentList(24);
   return res.json({
@@ -150,7 +139,6 @@ function getCommentList(req: Request, res: Response) {
 }
 
 export default {
-  'GET  /api/item/listMy': getItemList,
-  'GET  /api/order/list': getOrderList,
-  'GET  /api/comment/list': getCommentList,
+  'GET  /api/item/listReview': getItemList,
+  'GET  /api/order/listArbitration': getCommentList,
 };

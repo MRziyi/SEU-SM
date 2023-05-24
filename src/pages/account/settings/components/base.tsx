@@ -1,72 +1,102 @@
 import React from 'react';
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Input, Upload, message } from 'antd';
-import ProForm, {
-  ProFormDependency,
-  ProFormFieldSet,
-  ProFormSelect,
-  ProFormText,
-} from '@ant-design/pro-form';
-import { useRequest } from 'umi';
-import { queryCurrent } from '../service';
-import { queryProvince, queryCity } from '../service';
+import { Button, Form, Upload, message } from 'antd';
+import ProForm, { ProFormText } from '@ant-design/pro-form';
+import { request, useModel } from 'umi';
 
 import styles from './BaseView.less';
 
-const validatorPhone = (rule: any, value: string[], callback: (message?: string) => void) => {
-  if (!value[0]) {
-    callback('Please input your area code!');
-  }
-  if (!value[1]) {
-    callback('Please input your phone number!');
-  }
-  callback();
-};
-// 头像组件 方便以后独立，增加裁剪之类的功能
-const AvatarView = ({ avatar }: { avatar: string }) => (
-  <>
-    <div className={styles.avatar_title}>头像</div>
-    <div className={styles.avatar}>
-      <img src={avatar} alt="avatar" />
-    </div>
-    <Upload showUploadList={false}>
-      <div className={styles.button_view}>
-        <Button>
-          <UploadOutlined />
-          更换头像
-        </Button>
-      </div>
-    </Upload>
-  </>
-);
-
 const BaseView: React.FC = () => {
-  const { data: currentUser, loading } = useRequest(() => {
-    return queryCurrent();
-  });
+  const [form] = Form.useForm<{
+    name: string;
+    phone: string;
+    imgUrl: string;
+  }>();
 
-  const getAvatarURL = () => {
-    if (currentUser) {
-      if (currentUser.imgUrl) {
-        return currentUser.imgUrl;
-      }
-      const url = 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png';
-      return url;
-    }
-    return '';
-  };
+  const AvatarView = ({ avatar }: { avatar: string }) => (
+    <>
+      <div className={styles.avatar_title}>头像</div>
+      <div className={styles.avatar}>
+        <img src={avatar} alt="avatar" />
+      </div>
+      <Upload
+        showUploadList={false}
+        accept="image/*"
+        customRequest={async (options: any) => {
+          const data = new FormData();
+          data.append('file', options.file);
+          try {
+            const response = await fetch('/api/upload/image', {
+              method: 'POST',
+              body: data,
+            });
+            if (response.ok) {
+              response.json().then((res: any) => {
+                options.onSuccess({ url: res.data }, new Response());
+                form.setFieldsValue({ imgUrl: res.data });
+              });
+            } else {
+              options.onError(new Error('上传失败'));
+            }
+          } catch (error) {
+            console.error('上传图片出错:', error);
+            options.onError(error);
+          }
+        }}
+        onChange={async (info) => {
+          if (info.file.status === 'done') {
+            message.success(`${info.file.name} 上传成功`);
+          } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} 上传失败`);
+          }
+        }}
+      >
+        <div className={styles.button_view}>
+          <Button>
+            <UploadOutlined />
+            更换头像
+          </Button>
+        </div>
+      </Upload>
+    </>
+  );
 
-  const handleFinish = async () => {
-    message.success('更新基本信息成功');
-  };
+  //  获取用户信息
+  const { initialState, loading } = useModel('@@initialState');
+
   return (
     <div className={styles.baseView}>
       {loading ? null : (
         <>
           <div className={styles.left}>
-            <ProForm
+            <ProForm<{
+              name: string;
+              phone: string;
+              imgUrl: string;
+            }>
+              form={form}
               layout="vertical"
-              onFinish={handleFinish}
+              onFinish={async (values) => {
+                try {
+                  // 发送表单数据到服务器
+                  const response = await request<{
+                    data: boolean;
+                  }>('/api/user/modify', {
+                    method: 'POST',
+                    body: JSON.stringify({ ...values }),
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                  });
+                  if (response.data) {
+                    message.success('提交成功');
+                  } else {
+                    message.error('提交失败');
+                  }
+                } catch (error) {
+                  message.error('提交出错');
+                }
+              }}
               submitter={{
                 searchConfig: {
                   submitText: '更新基本信息',
@@ -74,8 +104,9 @@ const BaseView: React.FC = () => {
                 render: (_, dom) => dom[1],
               }}
               initialValues={{
-                ...currentUser,
-                phone: currentUser?.phone,
+                name: initialState?.currentUser?.nickName,
+                phone: initialState?.currentUser?.phone,
+                imgUrl: initialState?.currentUser?.imgUrl,
               }}
               hideRequiredMark
             >
@@ -90,83 +121,21 @@ const BaseView: React.FC = () => {
                   },
                 ]}
               />
-              <ProForm.Group title="所在省市" size={8}>
-                <ProFormSelect
-                  rules={[
-                    {
-                      required: true,
-                      message: '请输入您的所在省!',
-                    },
-                  ]}
-                  width="sm"
-                  fieldProps={{
-                    labelInValue: true,
-                  }}
-                  name="province"
-                  className={styles.item}
-                  request={async () => {
-                    return queryProvince().then(({ data }) => {
-                      return data.map((item) => {
-                        return {
-                          label: item.name,
-                          value: item.id,
-                        };
-                      });
-                    });
-                  }}
-                />
-                <ProFormDependency name={['province']}>
-                  {({ province }) => {
-                    return (
-                      <ProFormSelect
-                        params={{
-                          key: province?.value,
-                        }}
-                        name="city"
-                        width="sm"
-                        rules={[
-                          {
-                            required: true,
-                            message: '请输入您的所在城市!',
-                          },
-                        ]}
-                        disabled={!province}
-                        className={styles.item}
-                        request={async () => {
-                          if (!province?.key) {
-                            return [];
-                          }
-                          return queryCity(province.key || '').then(({ data }) => {
-                            return data.map((item) => {
-                              return {
-                                label: item.name,
-                                value: item.id,
-                              };
-                            });
-                          });
-                        }}
-                      />
-                    );
-                  }}
-                </ProFormDependency>
-              </ProForm.Group>
-              <ProFormFieldSet
+              <ProFormText
                 name="phone"
                 label="联系电话"
                 rules={[
                   {
                     required: true,
-                    message: '请输入您的联系电话!',
+                    message: '请输入您的电话!',
                   },
-                  { validator: validatorPhone },
                 ]}
-              >
-                <Input className={styles.phone_number} />
-              </ProFormFieldSet>
+              ></ProFormText>
+              <ProFormText name="imgUrl" hidden></ProFormText>
             </ProForm>
           </div>
           <div className={styles.right}>
-            <AvatarView avatar={getAvatarURL()} />
+            <AvatarView avatar={form.getFieldValue('imgUrl')} />
           </div>
         </>
       )}

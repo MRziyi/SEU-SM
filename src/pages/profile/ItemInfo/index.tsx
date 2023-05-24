@@ -1,14 +1,15 @@
 import { PageContainer } from '@ant-design/pro-layout';
-import { Image, Card, Descriptions, Divider, Rate, Button, Avatar } from 'antd';
+import { Image, Card, Descriptions, Divider, Rate, Button, Avatar, message } from 'antd';
 import { useState } from 'react';
-import { useHistory, useParams, useRequest } from 'umi';
+import { request, useHistory, useModel, useParams, useRequest } from 'umi';
 import { queryItemInfo } from './service';
 import {
+  CheckOutlined,
   CommentOutlined,
   DollarOutlined,
   FileAddOutlined,
-  ShoppingCartOutlined,
-  UserOutlined,
+  RollbackOutlined,
+  StopOutlined,
 } from '@ant-design/icons';
 import styles from './style.less';
 import OrderForm from './components/OrderForm';
@@ -29,6 +30,9 @@ const ItemInfo: React.FC = () => {
 
   const { itemId } = useParams<RouteParams>();
 
+  //  获取用户信息
+  const { initialState } = useModel('@@initialState');
+
   const { data, loading } = useRequest(() => {
     return queryItemInfo(itemId);
   });
@@ -38,61 +42,114 @@ const ItemInfo: React.FC = () => {
   function showModal() {
     setOpen(true);
     setItemId(itemId);
-    console.log(itemId);
   }
 
-  const contentForCustomer = (
-    <div style={{ textAlign: 'center' }}>
-      <span>
-        <Button type="primary" icon={<DollarOutlined />} size={'large'} onClick={showModal}>
-          立即下单
-        </Button>
-        <OrderForm {...{ open, setOpen, itemIdPara }}></OrderForm>
-        <Button
-          style={{ marginRight: '10%', marginLeft: '10%' }}
-          type="primary"
-          icon={<CommentOutlined />}
-          size={'large'}
-        >
-          联系卖家
-        </Button>
-
-        <Button
-          type="primary"
-          icon={<ShoppingCartOutlined />}
-          size={'large'}
-          onClick={handleGoBack}
-        >
-          返回市场
-        </Button>
-      </span>
-    </div>
-  );
-
-  const contentForSeller = (
-    <div style={{ textAlign: 'center' }}>
-      <span>
-        <Button
-          type="primary"
-          style={{ marginRight: '10%' }}
-          icon={<FileAddOutlined />}
-          size={'large'}
-          onClick={showModal}
-        >
-          修改商品
-        </Button>
-        <UpdateForm {...{ open, setOpen }}></UpdateForm>
-
-        <Button type="primary" icon={<UserOutlined />} size={'large'} onClick={handleGoBack}>
-          返回个人中心
-        </Button>
-      </span>
-    </div>
-  );
-
+  const statusName = ['待审核', '已上架', '已被下单'];
   return (
-    //TODO：全局变量获取个人身份信息进行判断
-    <PageContainer content={itemId !== data?.ownerInfo.id ? contentForCustomer : contentForSeller}>
+    <PageContainer
+      header={{
+        title:
+          data?.itemInfo.itemName +
+          '——' +
+          (data?.itemInfo?.status
+            ? data?.itemInfo?.status === -1
+              ? '已被下架'
+              : statusName[data?.itemInfo.status]
+            : ''),
+
+        extra: [
+          <Button type="primary" icon={<RollbackOutlined />} onClick={handleGoBack} key="3">
+            返回上一级
+          </Button>,
+
+          <Button key={5} icon={<CommentOutlined />}>
+            联系卖家
+          </Button>,
+
+          initialState?.currentUser?.access == 'admin' ? (
+            <Button
+              key={1}
+              icon={<StopOutlined />}
+              onClick={async () => {
+                try {
+                  const newStatus = -1;
+                  const response = await request<{
+                    data: number;
+                  }>('/api/item/status', {
+                    method: 'POST',
+                    body: JSON.stringify({ newStatus }),
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                  });
+                  if (response.data) {
+                    message.success('提交成功');
+                  } else {
+                    message.error('提交失败');
+                  }
+                } catch (error) {
+                  message.error('提交出错');
+                  console.error(error);
+                }
+              }}
+            >
+              下架商品
+            </Button>
+          ) : (
+            ''
+          ),
+          data?.itemInfo.status === 0 && initialState?.currentUser?.access == 'admin' ? (
+            <Button
+              key={2}
+              icon={<CheckOutlined />}
+              onClick={async () => {
+                try {
+                  const newStatus = 1;
+                  const response = await request<{
+                    data: number;
+                  }>('/api/item/status', {
+                    method: 'POST',
+                    body: JSON.stringify({ newStatus }),
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                  });
+                  if (response.data) {
+                    message.success('提交成功');
+                  } else {
+                    message.error('提交失败');
+                  }
+                } catch (error) {
+                  message.error('提交出错');
+                  console.error(error);
+                }
+              }}
+            >
+              审核通过
+            </Button>
+          ) : (
+            ''
+          ),
+          initialState?.currentUser?.id == data?.ownerInfo.id ? (
+            <Button key={3} icon={<FileAddOutlined />} onClick={showModal}>
+              修改商品
+              <UpdateForm {...{ open, setOpen }}></UpdateForm>
+            </Button>
+          ) : (
+            ''
+          ),
+          initialState?.currentUser?.id != data?.ownerInfo.id &&
+          initialState?.currentUser?.access == 'user' ? (
+            <Button key={4} icon={<DollarOutlined />} onClick={showModal}>
+              立即下单
+              <OrderForm {...{ open, setOpen, itemIdPara }}></OrderForm>
+            </Button>
+          ) : (
+            ''
+          ),
+        ],
+      }}
+    >
       <Card bordered={false} loading={loading}>
         <Descriptions title="商品信息" style={{ marginBottom: 32 }}>
           <Descriptions.Item label="商品名称">{data?.itemInfo.itemName}</Descriptions.Item>

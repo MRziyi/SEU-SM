@@ -98,10 +98,18 @@ export default defineConfig({
       component: './market',
     },
     {
+      path: '/workpanel',
+      name: '工作台',
+      icon: 'crown',
+      access: 'canAdmin',
+      component: './workpanel',
+    },
+    {
       path: '/dashboard',
       name: '仪表盘',
       icon: 'dashboard',
       access: 'canAdmin',
+      hideInMenu: true,
       routes: [
         {
           path: '/dashboard',
@@ -131,6 +139,7 @@ export default defineConfig({
       path: '/form',
       icon: 'form',
       name: '表单',
+      hideInMenu: true,
       routes: [
         {
           path: '/form',
@@ -166,6 +175,7 @@ export default defineConfig({
       path: '/list',
       icon: 'table',
       name: '列表',
+      hideInMenu: true,
       routes: [
         {
           path: '/list/search',

@@ -53,9 +53,9 @@ function fakeUserList(count: number): CurrentUser[] {
   for (let i = 0; i < count; i += 1) {
     list.push({
       nickName: ownerName[i % 10],
-      id: `owner-${i}`,
+      id: `213213002`,
       imgUrl: ownerUrl[i % 8],
-      privilege: 'user',
+      access: 'user',
       phone: '1999999' + i,
       credit: i + 50,
     });
@@ -69,7 +69,7 @@ function getItemInfo(req: Request, res: Response) {
     itemId: itemId,
     itemName: itemName[1 % 8],
     imgUrl: imgUrl[1 % 4],
-    ownerId: 'owner-' + 1,
+    ownerId: '213213002',
     description: description[1 % 5],
     price: 1 * 10,
     status: 1,
@@ -93,7 +93,7 @@ function getOrderInfo(req: Request, res: Response) {
     data: {
       id: 'order-' + 1,
       buyerId: 'buyer-' + 1,
-      sellerId: 'seller-' + 1,
+      sellerId: '213213001',
       state: 1,
       createTime: new Date(new Date().getTime() - 2000 * 60 * 60 * 2 * 1).toString(),
       deliveryTime: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * 1).toString(),
@@ -101,7 +101,7 @@ function getOrderInfo(req: Request, res: Response) {
         itemId: 'item-' + 1,
         itemName: itemName[1 % 8],
         imgUrl: imgUrl[1 % 4],
-        ownerId: 'owner-' + 1,
+        ownerId: '213213001',
         description: description[1 % 5],
         price: 1 * 10,
         status: 1,
@@ -140,4 +140,5 @@ export default {
   'POST /api/item/info': getItemInfo,
   'POST /api/order/info': getOrderInfo,
   'POST /api/order/create': createOrder,
+  'POST /api/item/status': createOrder,
 };
