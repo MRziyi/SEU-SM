@@ -119,20 +119,21 @@ function getOrderInfo(req: Request, res: Response) {
   });
 }
 
-const waitTime = (time: number = 100) => {
+/*const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
     }, time);
   });
-};
+};*/
 
 function createOrder(req: Request, res: Response) {
-  waitTime(1000);
-  res.send({
-    data: 1,
-    code: 0,
-  });
+  setTimeout(() => {
+    res.send({
+      data: 1,
+      code: 0,
+    });
+  }, 1000);
   return;
 }
 
