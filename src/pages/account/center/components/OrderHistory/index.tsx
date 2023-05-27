@@ -1,7 +1,6 @@
 import { Avatar, Card, List, Typography } from 'antd';
 import { useRequest, Link } from 'umi';
 import React, { useState } from 'react';
-import moment from 'moment';
 import { queryOrderList } from '../../service';
 import type { OrderData } from '../../data';
 import styles from './index.less';
@@ -68,7 +67,7 @@ const OrderHistory: React.FC = () => {
                 }
               />
               <div className={styles.cardItemContent}>
-                <span>{moment(order.createTime).fromNow()}</span>
+                <span>{order.createTime}</span>
                 <div className={styles.avatarList}>
                   <span style={{ marginRight: 10 }}>{order.item.ownerName}</span>
                   <Avatar

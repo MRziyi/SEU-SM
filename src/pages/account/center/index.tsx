@@ -1,4 +1,9 @@
-import { ContactsOutlined, ClusterOutlined, PhoneOutlined } from '@ant-design/icons';
+import {
+  ContactsOutlined,
+  ClusterOutlined,
+  PhoneOutlined,
+  RadarChartOutlined,
+} from '@ant-design/icons';
 import { Card, Col, Divider, Row } from 'antd';
 import React, { useState } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
@@ -56,7 +61,7 @@ const Center: React.FC<RouteChildrenProps> = () => {
           一卡通号: {id}
         </p>
         <p>
-          <ClusterOutlined
+          <RadarChartOutlined
             style={{
               marginRight: 8,
             }}

@@ -9,7 +9,7 @@ import styles from './index.less';
 const { Paragraph } = Typography;
 
 const ReviewProducts: React.FC = () => {
-  const [pageSize, setPageSize] = useState<number>(6);
+  const [pageSize, setPageSize] = useState<number>(8);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [listData, setListData] = useState<ItemData[]>([]);
   const [totalNum, setTotalNum] = useState<number>(0);
@@ -38,7 +38,7 @@ const ReviewProducts: React.FC = () => {
     onChange: changePage,
     showQuickJumper: true,
     showSizeChanger: true,
-    pageSizeOptions: [6, 12, 18, 24],
+    pageSizeOptions: [8, 16, 24, 32],
     currentPage: currentPage,
     pageSize: pageSize,
     total: totalNum,
@@ -50,7 +50,15 @@ const ReviewProducts: React.FC = () => {
       className={styles.coverCardList}
       rowKey="itemId"
       loading={loading}
-      grid={{ gutter: 24, xxl: 3, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+      grid={{
+        gutter: 16,
+        xs: 1,
+        sm: 2,
+        md: 3,
+        lg: 3,
+        xl: 4,
+        xxl: 4,
+      }}
       pagination={paginationProps}
       dataSource={listData}
       renderItem={(item) => (
@@ -66,7 +74,7 @@ const ReviewProducts: React.FC = () => {
                 description={<Paragraph className={styles.item}>{item.description}</Paragraph>}
               />
               <div className={styles.cardItemContent}>
-                <span>{moment(item.uploadedTime).fromNow()}</span>
+                <span>{item.uploadTime}</span>
                 <div className={styles.avatarList}>
                   <span style={{ marginRight: 10 }}>{item.ownerName}</span>
                   <Avatar size="small" className={styles.avatar} src={item.ownerUrl} alt="avatar" />

@@ -14,7 +14,7 @@ import { request } from 'umi';
 interface modalCtrl {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  itemIdPara: string;
+  itemIdPara?: string;
 }
 
 const OrderForm: React.FC<modalCtrl> = ({ open, setOpen, itemIdPara }) => {

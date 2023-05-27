@@ -2,24 +2,24 @@ import { Avatar, Card, List, Typography } from 'antd';
 import { useRequest, Link } from 'umi';
 import React, { useState } from 'react';
 import moment from 'moment';
-import { queryItemList } from '../../service';
-import type { ItemData } from '../../data';
+import { queryAllOrderList } from '../../service';
+import type { OrderData } from '../../data';
 import styles from './index.less';
 
 const { Paragraph } = Typography;
 
-const MyPublish: React.FC = () => {
+const AllOrder: React.FC = () => {
   const [pageSize, setPageSize] = useState<number>(6);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [listData, setListData] = useState<ItemData[]>([]);
+  const [listData, setListData] = useState<OrderData[]>([]);
   const [totalNum, setTotalNum] = useState<number>(0);
   // 获取列表数据
   const { loading } = useRequest(
     () => {
-      return queryItemList();
+      return queryAllOrderList();
     },
     {
-      onSuccess: (result) => {
+      onSuccess: (result: any) => {
         setTotalNum(result.totalNum);
         setListData(result.list);
       },
@@ -46,38 +46,45 @@ const MyPublish: React.FC = () => {
   };
 
   return (
-    <List<ItemData>
+    <List<OrderData>
       className={styles.coverCardList}
-      rowKey="itemId"
+      rowKey="id"
       loading={loading}
       grid={{ gutter: 24, xxl: 3, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
       pagination={paginationProps}
       dataSource={listData}
-      renderItem={(item) => (
-        <Link to={`/profile/item-info/${item.itemId}`}>
-          <List.Item>
+      renderItem={(order) => (
+        <List.Item>
+          <Link to={`/profile/order-info/${order.id}`}>
             <Card
               className={styles.card}
               hoverable
-              cover={<img alt={item.itemName} src={item.imgUrl} />}
+              cover={<img alt={order.item.itemName} src={order.item.imgUrl} />}
             >
               <Card.Meta
-                title={<a>{item.itemName}</a>}
-                description={<Paragraph className={styles.item}>{item.description}</Paragraph>}
+                title={<a>{order.item.itemName}</a>}
+                description={
+                  <Paragraph className={styles.item}>{order.item.description}</Paragraph>
+                }
               />
               <div className={styles.cardItemContent}>
-                <span>{item.uploadedTime}</span>
+                <span>{order.createTime}</span>
                 <div className={styles.avatarList}>
-                  <span style={{ marginRight: 10 }}>{item.ownerName}</span>
-                  <Avatar size="small" className={styles.avatar} src={item.ownerUrl} alt="avatar" />
+                  <span style={{ marginRight: 10 }}>{order.item.ownerName}</span>
+                  <Avatar
+                    size="small"
+                    className={styles.avatar}
+                    src={order.item.ownerUrl}
+                    alt="avatar"
+                  />
                 </div>
               </div>
             </Card>
-          </List.Item>
-        </Link>
+          </Link>
+        </List.Item>
       )}
     />
   );
 };
 
-export default MyPublish;
+export default AllOrder;

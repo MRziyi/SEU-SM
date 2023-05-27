@@ -1,4 +1,4 @@
-export type tabKeyType = 'reviewProducts' | 'arbitration';
+export type tabKeyType = '1' | '2' | '3' | '4';
 
 export type CurrentUser = {
   nickName?: string;
@@ -17,7 +17,7 @@ export interface ItemData {
   description: string;
   price: number;
   status: number;
-  uploadedTime: string;
+  uploadTime: string;
   ownerName: string;
   ownerUrl: string;
 }

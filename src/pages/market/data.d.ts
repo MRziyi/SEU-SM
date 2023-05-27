@@ -1,3 +1,4 @@
+export type tabKeyType = '1' | '2';
 export type Member = {
   avatar: string;
   name: string;
@@ -17,7 +18,7 @@ export interface ItemData {
   description: string;
   price: number;
   status: number;
-  uploadedTime: string;
+  uploadTime: string;
   ownerName: string;
   ownerUrl: string;
 }

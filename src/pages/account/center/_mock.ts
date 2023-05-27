@@ -151,6 +151,6 @@ function getCommentList(req: Request, res: Response) {
 
 export default {
   'GET  /api/item/listMy': getItemList,
-  'GET  /api/order/list': getOrderList,
+  'GET  /api/order/listMy': getOrderList,
   'GET  /api/comment/list': getCommentList,
 };

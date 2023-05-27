@@ -96,7 +96,7 @@ const UploadForm: React.FC<formButton> = ({ btn }) => {
           tooltip="推荐写明成色、配件、购买日期等信息"
           rules={[{ required: true }]}
         />
-        <Form.Item name="imgUrl" label="Switch">
+        <Form.Item name="imgUrl" label="商品图片">
           <Dragger
             accept="image/*"
             customRequest={async (options: any) => {

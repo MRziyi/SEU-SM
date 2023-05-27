@@ -2,21 +2,21 @@ import { Avatar, Card, List, Typography } from 'antd';
 import { useRequest, Link } from 'umi';
 import React, { useState } from 'react';
 import moment from 'moment';
-import { queryItemList } from '../../service';
+import { queryAllList } from '../../service';
 import type { ItemData } from '../../data';
 import styles from './index.less';
 
 const { Paragraph } = Typography;
 
-const MyPublish: React.FC = () => {
-  const [pageSize, setPageSize] = useState<number>(6);
+const AllItem: React.FC = () => {
+  const [pageSize, setPageSize] = useState<number>(8);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [listData, setListData] = useState<ItemData[]>([]);
   const [totalNum, setTotalNum] = useState<number>(0);
   // 获取列表数据
   const { loading } = useRequest(
     () => {
-      return queryItemList();
+      return queryAllList();
     },
     {
       onSuccess: (result) => {
@@ -38,7 +38,7 @@ const MyPublish: React.FC = () => {
     onChange: changePage,
     showQuickJumper: true,
     showSizeChanger: true,
-    pageSizeOptions: [6, 12, 18, 24],
+    pageSizeOptions: [8, 16, 24, 32],
     currentPage: currentPage,
     pageSize: pageSize,
     total: totalNum,
@@ -50,7 +50,15 @@ const MyPublish: React.FC = () => {
       className={styles.coverCardList}
       rowKey="itemId"
       loading={loading}
-      grid={{ gutter: 24, xxl: 3, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+      grid={{
+        gutter: 16,
+        xs: 1,
+        sm: 2,
+        md: 3,
+        lg: 3,
+        xl: 4,
+        xxl: 4,
+      }}
       pagination={paginationProps}
       dataSource={listData}
       renderItem={(item) => (
@@ -66,7 +74,7 @@ const MyPublish: React.FC = () => {
                 description={<Paragraph className={styles.item}>{item.description}</Paragraph>}
               />
               <div className={styles.cardItemContent}>
-                <span>{item.uploadedTime}</span>
+                <span>{item.uploadTime}</span>
                 <div className={styles.avatarList}>
                   <span style={{ marginRight: 10 }}>{item.ownerName}</span>
                   <Avatar size="small" className={styles.avatar} src={item.ownerUrl} alt="avatar" />
@@ -80,4 +88,4 @@ const MyPublish: React.FC = () => {
   );
 };
 
-export default MyPublish;
+export default AllItem;

@@ -1,166 +1,172 @@
-import ProCard from '@ant-design/pro-card';
-import {
-  ProForm,
-  ProFormCheckbox,
-  ProFormDatePicker,
-  ProFormDateRangePicker,
-  ProFormInstance,
-  ProFormSelect,
+import ProForm, {
   ProFormText,
   ProFormTextArea,
-  StepsForm,
+  ProFormGroup,
+  ProFormMoney,
 } from '@ant-design/pro-form';
-import { Modal, message } from 'antd';
-import { useRef, useState } from 'react';
+import { Modal, message, Form, Upload, Button } from 'antd';
+import { useEffect, useState } from 'react';
+import { request } from 'umi';
+import { ItemData } from '../../data';
+import { UploadOutlined } from '@ant-design/icons';
 
 interface modalCtrl {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  itemPara?: ItemData;
 }
 
-const UpdateForm: React.FC<modalCtrl> = ({ open, setOpen }) => {
-  const formRef = useRef<ProFormInstance>();
+const UpdateForm: React.FC<modalCtrl> = ({ open, setOpen, itemPara }) => {
+  const [show, setShow] = useState(false);
 
-  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [form] = Form.useForm<{
+    itemName: string;
+    price: string;
+    description: string;
+    imgUrl: string;
+  }>();
 
-  const handleOk = () => {
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setOpen(false);
-      setConfirmLoading(false);
-    }, 2000);
-  };
+  useEffect(() => {
+    setShow(open);
+  }, [open]);
 
-  const handleCancel = () => {
-    console.log('Clicked cancel button');
-    setOpen(false);
-  };
+  useEffect(() => {
+    setOpen(show);
+  }, [show]);
 
   return (
     <Modal
       title="修改商品信息"
       width={700}
       open={open}
-      onOk={handleOk}
-      confirmLoading={confirmLoading}
-      onCancel={handleCancel}
+      okButtonProps={{ style: { display: 'none' } }}
+      onCancel={() => {
+        setShow(false);
+        return true;
+      }}
     >
-      <ProCard>
-        <StepsForm<{
-          name: string;
-        }>
-          formRef={formRef}
-          onFinish={async () => {
-            message.success('提交成功');
-          }}
-          formProps={{
-            validateMessages: {
-              required: '此项为必填项',
-            },
-          }}
-        >
-          <StepsForm.StepForm<{
-            name: string;
-          }>
-            name="base"
-            title="创建实验"
-            stepProps={{
-              description: '这里填入的都是基本信息',
-            }}
-            onFinish={async () => {
-              console.log(formRef.current?.getFieldsValue());
-            }}
-          >
-            <ProFormText
-              name="name"
-              label="实验名称"
-              width="md"
-              tooltip="最长为 24 位，用于标定的唯一 id"
-              placeholder="请输入名称"
-              rules={[{ required: true }]}
-            />
-            <ProFormDatePicker name="date" label="日期" />
-            <ProFormDateRangePicker name="dateTime" label="时间区间" />
-            <ProFormTextArea name="remark" label="备注" width="lg" placeholder="请输入备注" />
-          </StepsForm.StepForm>
-          <StepsForm.StepForm<{
-            checkbox: string;
-          }>
-            name="checkbox"
-            title="设置参数"
-            stepProps={{
-              description: '这里填入运维参数',
-            }}
-            onFinish={async () => {
-              console.log(formRef.current?.getFieldsValue());
+      <ProForm<{
+        itemName: string;
+        price: string;
+        description: string;
+        imgUrl: string;
+      }>
+        initialValues={{
+          itemName: itemPara?.itemName,
+          price: itemPara?.price,
+          description: itemPara?.description,
+          imgUrl: itemPara?.imgUrl,
+        }}
+        form={form}
+        autoFocusFirstInput
+        onFinish={async (values) => {
+          try {
+            const response = await request<{
+              data: boolean;
+            }>('/api/item/modify', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              data: {
+                itemName: values.itemName,
+                price: values.price,
+                description: values.description,
+                imgUrl: values.imgUrl,
+                itemId: itemPara?.itemId,
+              },
+            });
+            if (response.data) {
+              message.success('提交成功');
+              setShow(false);
               return true;
-            }}
-          >
-            <ProFormCheckbox.Group
-              name="checkbox"
-              label="迁移类型"
-              width="lg"
-              options={['结构迁移', '全量迁移', '增量迁移', '全量校验']}
-            />
-            <ProForm.Group>
-              <ProFormText name="dbname" label="业务 DB 用户名" />
-              <ProFormDatePicker name="datetime" label="记录保存时间" width="sm" />
-              <ProFormCheckbox.Group
-                name="checkbox"
-                label="迁移类型"
-                options={['完整 LOB', '不同步 LOB', '受限制 LOB']}
-              />
-            </ProForm.Group>
-          </StepsForm.StepForm>
-          <StepsForm.StepForm
-            name="time"
-            title="发布实验"
-            stepProps={{
-              description: '这里填入发布判断',
-            }}
-          >
-            <ProFormCheckbox.Group
-              name="checkbox"
-              label="部署单元"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-              options={['部署单元1', '部署单元2', '部署单元3']}
-            />
-            <ProFormSelect
-              label="部署分组策略"
-              name="remark"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-              initialValue="1"
-              options={[
-                {
-                  value: '1',
-                  label: '策略一',
-                },
-                { value: '2', label: '策略二' },
-              ]}
-            />
-            <ProFormSelect
-              label="Pod 调度策略"
-              name="remark2"
-              initialValue="2"
-              options={[
-                {
-                  value: '1',
-                  label: '策略一',
-                },
-                { value: '2', label: '策略二' },
-              ]}
-            />
-          </StepsForm.StepForm>
-        </StepsForm>
-      </ProCard>
+            } else {
+              message.error('提交失败，请重试');
+              return false;
+            }
+          } catch (error) {
+            message.error('提交失败，请重试');
+            return false;
+          }
+        }}
+        onFinishFailed={(errorInfo: any) => {
+          console.log('提交失败:', errorInfo);
+        }}
+      >
+        <ProFormGroup>
+          <ProFormText
+            style={{ width: '50%' }}
+            width="md"
+            name="itemName"
+            label="商品名称"
+            tooltip="将作为标题用于搜索，请尽量准确"
+            placeholder="请输入商品名称"
+            rules={[{ required: true }]}
+          />
+          <ProFormMoney
+            style={{ width: '50%' }}
+            width="md"
+            name="price"
+            label="定价"
+            locale="zh-CN"
+            placeholder="请输入定价"
+            min={0}
+            rules={[{ required: true }]}
+          />
+        </ProFormGroup>
+        <ProFormGroup>
+          <ProFormTextArea
+            style={{ width: 'md' }}
+            width="md"
+            name="description"
+            label="描述"
+            placeholder="请输入商品描述"
+            tooltip="推荐写明成色、配件、购买日期等信息"
+            rules={[{ required: true }]}
+          />
+          <Form.Item name="imgUrl" label="商品照片">
+            <Upload
+              showUploadList={false}
+              accept="image/*"
+              customRequest={async (options: any) => {
+                const data = new FormData();
+                data.append('file', options.file);
+                try {
+                  const response = await fetch('/api/upload/image', {
+                    method: 'POST',
+                    body: data,
+                  });
+                  if (response.ok) {
+                    response.json().then((res: any) => {
+                      options.onSuccess({ url: res.data }, new Response());
+                      form.setFieldsValue({ imgUrl: res.data });
+                    });
+                  } else {
+                    options.onError(new Error('上传失败'));
+                  }
+                } catch (error) {
+                  console.error('上传图片出错:', error);
+                  options.onError(error);
+                }
+              }}
+              onChange={async (info) => {
+                if (info.file.status === 'done') {
+                  message.success(`${info.file.name} 上传成功`);
+                } else if (info.file.status === 'error') {
+                  message.error(`${info.file.name} 上传失败`);
+                }
+              }}
+            >
+              <div>
+                <Button>
+                  <UploadOutlined />
+                  修改商品照片
+                </Button>
+              </div>
+            </Upload>
+          </Form.Item>
+        </ProFormGroup>
+      </ProForm>
     </Modal>
   );
 };

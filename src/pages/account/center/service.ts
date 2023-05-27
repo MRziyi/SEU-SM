@@ -22,7 +22,7 @@ export async function queryItemList(): Promise<{
 export async function queryOrderList(): Promise<{
   data: { totalNum: number; list: OrderData[] };
 }> {
-  return request('/api/order/list');
+  return request('/api/order/listMy');
 }
 
 export async function queryCommentList(): Promise<{
