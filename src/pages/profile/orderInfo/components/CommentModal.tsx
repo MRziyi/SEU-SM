@@ -72,7 +72,12 @@ const CommentModal: React.FC<modalCtrl> = ({ open, setOpen, currentUserId, order
           label="评价内容"
           rules={[{ required: true }]}
         />
-        <ProFormRate name="rate" label="评分" rules={[{ required: true }]}></ProFormRate>
+        <ProFormRate
+          fieldProps={{ allowHalf: false }}
+          name="rate"
+          label="评分"
+          rules={[{ required: true }]}
+        ></ProFormRate>
       </ProForm>
     </Modal>
   );

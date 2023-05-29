@@ -82,6 +82,10 @@ const OrderHistory: React.FC = () => {
                       ? '协商失败'
                       : order.state == 7
                       ? '仲裁中'
+                      : order.state == 8
+                      ? '买家已评价'
+                      : order.state == 9
+                      ? '卖家已评价'
                       : '无效'}
                   </a>
                 }

@@ -22,5 +22,5 @@ export async function queryAllOrderList(): Promise<{
 export async function queryArbiList(): Promise<{
   data: { totalNum: number; list: OrderData[] };
 }> {
-  return request('/api/order/listArbi');
+  return request('/api/order/listArbitration');
 }

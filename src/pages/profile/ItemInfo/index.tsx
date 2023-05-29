@@ -146,7 +146,8 @@ const ItemInfo: React.FC = () => {
           ) : (
             ''
           ),
-          initialState?.currentUser?.id == data?.ownerInfo.id ? (
+          initialState?.currentUser?.id == data?.ownerInfo.id &&
+          (data?.itemInfo.status == -1 || data?.itemInfo.status == 0) ? (
             <Button key={3} icon={<FileAddOutlined />} onClick={() => setOpenModify(true)}>
               修改商品
               <UpdateForm

@@ -61,7 +61,7 @@ const OrderInfo: FC = () => {
   const [openDelivery, setOpenDelivery] = useState(false);
   const [openCancel, setOpenCancel] = useState(false);
   const [currentUserId, setCurrentUserId] = useState('');
-  //0:已下单 1:已发货 2:已签收 3.已评价  4:协商中 5:售后结束 6:协商失败 7:仲裁
+  //0:已下单 1:已发货 2:已签收 3.已评价 4:协商中 5:售后结束 6:协商失败 7:仲裁 8:买家已评价 9:卖家已评价
 
   const extra = <div className={styles.moreInfo}>订单金额: ¥{data?.orderDTO.item.price}</div>;
 
@@ -162,7 +162,10 @@ const OrderInfo: FC = () => {
             ''
           ),
 
-          data?.orderDTO.state === 2 || data?.orderDTO.state === 5 ? (
+          data?.orderDTO.state === 2 ||
+          data?.orderDTO.state === 5 ||
+          (data?.orderDTO.state === 8 && initialState?.currentUser?.id === data.seller.id) ||
+          (data?.orderDTO.state === 9 && initialState?.currentUser?.id === data.buyer.id) ? (
             <Button key={3} icon={<SmileOutlined />} onClick={() => setOpenComment(true)}>
               评价对方
               <CommentModal
@@ -365,6 +368,10 @@ const OrderInfo: FC = () => {
                     <b style={{ fontSize: 'large', textAlign: 'center' }}>协商失败</b>
                   ) : data.orderDTO.state == 7 ? (
                     <b style={{ fontSize: 'large', textAlign: 'center' }}>仲裁中</b>
+                  ) : data.orderDTO.state == 8 ? (
+                    <b style={{ fontSize: 'large', textAlign: 'center' }}>买家已评价</b>
+                  ) : data.orderDTO.state == 9 ? (
+                    <b style={{ fontSize: 'large', textAlign: 'center' }}>卖家已评价</b>
                   ) : (
                     ''
                   )

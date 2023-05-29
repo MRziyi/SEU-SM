@@ -1,5 +1,5 @@
 import { Link, useRequest } from 'umi';
-import { Avatar, Card, Descriptions, List, Rate } from 'antd';
+import { Avatar, Card, Descriptions, List } from 'antd';
 import React, { useState } from 'react';
 import type { OrderData } from '../../data';
 import { queryArbiList } from '../../service';
@@ -80,20 +80,18 @@ const Arbitration: React.FC = () => {
         <List.Item key={item.id}>
           <Link to={`/profile/order-info/${item.id}`}>
             <Card hoverable bodyStyle={{ paddingBottom: 20 }}>
-              <Card.Meta avatar={<Avatar size="large" src={item.imgUrl} />} title={item.name} />
-              <div className={stylesApplications.cardInfo}>
-                <div>
-                  <p>协商记录：</p>
-                  <div>
-                    <Descriptions title="订单状态信息" style={{ marginBottom: 32 }}>
-                      {Object.entries(item.message).map(([key, value]) => (
-                        <Descriptions.Item key={key} label={key}>
-                          {value}
-                        </Descriptions.Item>
-                      ))}
-                    </Descriptions>
-                  </div>
-                </div>
+              <Card.Meta
+                avatar={<Avatar src={item.item.imgUrl} />}
+                title={'收货人姓名：' + item.name}
+              />
+              <div>
+                <Descriptions title="协商记录" style={{ marginTop: 22, marginBottom: 22 }}>
+                  {Object.entries(item.message).map(([key, value]) => (
+                    <Descriptions.Item key={key} label={key}>
+                      {value}
+                    </Descriptions.Item>
+                  ))}
+                </Descriptions>
               </div>
             </Card>
           </Link>
