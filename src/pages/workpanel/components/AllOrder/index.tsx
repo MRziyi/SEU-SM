@@ -1,7 +1,6 @@
 import { Avatar, Card, List, Typography } from 'antd';
 import { useRequest, Link } from 'umi';
 import React, { useState } from 'react';
-import moment from 'moment';
 import { queryAllOrderList } from '../../service';
 import type { OrderData } from '../../data';
 import styles from './index.less';
@@ -62,7 +61,30 @@ const AllOrder: React.FC = () => {
               cover={<img alt={order.item.itemName} src={order.item.imgUrl} />}
             >
               <Card.Meta
-                title={<a>{order.item.itemName}</a>}
+                title={
+                  <a>
+                    {order.item.itemName}——
+                    {order.state == -1
+                      ? '已取消'
+                      : order.state == 0
+                      ? '已下单'
+                      : order.state == 1
+                      ? '已发货'
+                      : order.state == 2
+                      ? '已签收'
+                      : order.state == 3
+                      ? '已评价'
+                      : order.state == 4
+                      ? '协商中'
+                      : order.state == 5
+                      ? '售后结束'
+                      : order.state == 6
+                      ? '协商失败'
+                      : order.state == 7
+                      ? '仲裁中'
+                      : '无效'}
+                  </a>
+                }
                 description={
                   <Paragraph className={styles.item}>{order.item.description}</Paragraph>
                 }

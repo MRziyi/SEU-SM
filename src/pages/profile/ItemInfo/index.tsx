@@ -232,7 +232,7 @@ const ItemInfo: React.FC = () => {
 
         {data?.itemInfo.messages ? (
           <div>
-            <Descriptions>
+            <Descriptions title="物品状态信息">
               {Object.entries(data.itemInfo.messages).map(([key, value]) => (
                 <Descriptions.Item key={key} label={key}>
                   {value}

@@ -60,6 +60,7 @@ const MyModal: React.FC<modalCtrl> = ({ open, setOpen, displayMessage, url, idPa
             });
             if (response.data) {
               message.success('提交成功');
+              setOpen(false);
               return true;
             } else {
               message.error('提交失败，请重试');

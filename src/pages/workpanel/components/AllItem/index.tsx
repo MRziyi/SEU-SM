@@ -70,7 +70,22 @@ const AllItem: React.FC = () => {
               cover={<img alt={item.itemName} src={item.imgUrl} />}
             >
               <Card.Meta
-                title={<a>{item.itemName}</a>}
+                title={
+                  <a>
+                    <a>
+                      {item.itemName}——
+                      {item.status == -1
+                        ? '已下架'
+                        : item.status == 0
+                        ? '待审核'
+                        : item.status == 1
+                        ? '已上架'
+                        : item.status == 2
+                        ? '已被下单'
+                        : '无效'}
+                    </a>
+                  </a>
+                }
                 description={<Paragraph className={styles.item}>{item.description}</Paragraph>}
               />
               <div className={styles.cardItemContent}>

@@ -19,8 +19,8 @@ export async function queryAllOrderList(): Promise<{
   return request('/api/order/listAll');
 }
 
-export async function queryCommentList(): Promise<{
+export async function queryArbiList(): Promise<{
   data: { totalNum: number; list: OrderData[] };
 }> {
-  return request('/api/order/listArbitration');
+  return request('/api/order/listArbi');
 }

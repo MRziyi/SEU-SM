@@ -34,8 +34,6 @@ export type CommentData = {
 export type OrderData = {
   id: string;
   item: ItemData;
-  buyerId: string;
-  sellerId: string;
   state: number;
   createTime: string; //下单时间
   deliveryTime: string; //交易时间
@@ -45,4 +43,6 @@ export type OrderData = {
   tel: string; //收货人电话
   position: string; //交易地点
   remark: string; //订单备注
+  message: KeyValuePair[];
+  imgUrl: string;
 };

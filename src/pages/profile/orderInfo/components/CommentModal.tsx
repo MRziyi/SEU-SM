@@ -50,6 +50,7 @@ const CommentModal: React.FC<modalCtrl> = ({ open, setOpen, currentUserId, order
             });
             if (response.data) {
               message.success('提交成功');
+              setOpen(false);
               return true;
             } else {
               message.error('提交失败，请重试');
@@ -71,8 +72,8 @@ const CommentModal: React.FC<modalCtrl> = ({ open, setOpen, currentUserId, order
           label="评价内容"
           rules={[{ required: true }]}
         />
+        <ProFormRate name="rate" label="评分" rules={[{ required: true }]}></ProFormRate>
       </ProForm>
-      <ProFormRate name="rate" label="评分" rules={[{ required: true }]}></ProFormRate>
     </Modal>
   );
 };

@@ -63,7 +63,7 @@ const OrderInfo: FC = () => {
   const [currentUserId, setCurrentUserId] = useState('');
   //0:已下单 1:已发货 2:已签收 3.已评价  4:协商中 5:售后结束 6:协商失败 7:仲裁
 
-  const extra = <div className={styles.moreInfo}>订单金额: ¥{data?.item.price}</div>;
+  const extra = <div className={styles.moreInfo}>订单金额: ¥{data?.orderDTO.item.price}</div>;
 
   const popoverContent = (
     <div style={{ width: 160 }}>
@@ -115,11 +115,13 @@ const OrderInfo: FC = () => {
               联系卖家
             </Button>
           ) : (
-            ''
+            <Button key={12} icon={<CommentOutlined />}>
+              联系买家
+            </Button>
           ),
 
-          data?.state === 0 && initialState?.currentUser?.id == data.seller.id ? (
-            <Button key={1} icon={<SendOutlined />}>
+          data?.orderDTO.state === 0 && initialState?.currentUser?.id == data.seller.id ? (
+            <Button key={1} icon={<SendOutlined />} onClick={() => setOpenDelivery(true)}>
               发货
               <DeliverModal
                 open={openDelivery}
@@ -131,7 +133,7 @@ const OrderInfo: FC = () => {
             ''
           ),
 
-          data?.state === 1 && initialState?.currentUser?.id == data.buyer.id ? (
+          data?.orderDTO.state === 1 && initialState?.currentUser?.id == data.buyer.id ? (
             <Button
               key={2}
               icon={<DollarOutlined />}
@@ -160,8 +162,8 @@ const OrderInfo: FC = () => {
             ''
           ),
 
-          data?.state === 2 || data?.state === 5 ? (
-            <Button key={3} icon={<SmileOutlined />}>
+          data?.orderDTO.state === 2 || data?.orderDTO.state === 5 ? (
+            <Button key={3} icon={<SmileOutlined />} onClick={() => setOpenComment(true)}>
               评价对方
               <CommentModal
                 open={openComment}
@@ -174,7 +176,7 @@ const OrderInfo: FC = () => {
             ''
           ),
 
-          data?.state === 2 && initialState?.currentUser?.id == data.buyer.id ? (
+          data?.orderDTO.state === 2 && initialState?.currentUser?.id == data.buyer.id ? (
             <Button key={4} icon={<TransactionOutlined />} onClick={() => setOpenAfterSale(true)}>
               申请售后协商
               <MyModal
@@ -189,7 +191,7 @@ const OrderInfo: FC = () => {
             ''
           ),
 
-          data?.state === 4 && initialState?.currentUser?.id == data.seller.id ? (
+          data?.orderDTO.state === 4 && initialState?.currentUser?.id == data.seller.id ? (
             <Button
               key={5}
               icon={<CheckOutlined />}
@@ -197,7 +199,7 @@ const OrderInfo: FC = () => {
                 try {
                   const response = await request<{
                     data: number;
-                  }>('/api/order/status/allowNego', {
+                  }>('/api/order/status/allowAfterSale', {
                     method: 'GET',
                     params: { orderId },
                   });
@@ -218,7 +220,7 @@ const OrderInfo: FC = () => {
             ''
           ),
 
-          data?.state === 4 && initialState?.currentUser?.id == data.seller.id ? (
+          data?.orderDTO.state === 4 && initialState?.currentUser?.id == data.seller.id ? (
             <Button key={6} icon={<StopOutlined />} onClick={() => setOpenRejectNego(true)}>
               驳回售后请求
               <MyModal
@@ -233,7 +235,7 @@ const OrderInfo: FC = () => {
             ''
           ),
 
-          data?.state === 6 && initialState?.currentUser?.id == data.buyer.id ? (
+          data?.orderDTO.state === 6 && initialState?.currentUser?.id == data.buyer.id ? (
             <Button key={7} icon={<AlertOutlined />} onClick={() => setOpenArbi(true)}>
               申请管理员仲裁
               <MyModal
@@ -248,7 +250,7 @@ const OrderInfo: FC = () => {
             ''
           ),
 
-          data?.state === 7 && initialState?.currentUser?.access == 'admin' ? (
+          data?.orderDTO.state === 7 && initialState?.currentUser?.access == 'admin' ? (
             <Button
               key={8}
               icon={<CheckOutlined />}
@@ -277,7 +279,7 @@ const OrderInfo: FC = () => {
             ''
           ),
 
-          data?.state === 7 && initialState?.currentUser?.access == 'admin' ? (
+          data?.orderDTO.state === 7 && initialState?.currentUser?.access == 'admin' ? (
             <Button key={9} icon={<StopOutlined />} onClick={() => setOpenRejectArbi(true)}>
               驳回仲裁请求
               <MyModal
@@ -292,7 +294,7 @@ const OrderInfo: FC = () => {
             ''
           ),
 
-          data?.state === 0 ? (
+          data?.orderDTO.state === 0 ? (
             <Button key={10} icon={<TransactionOutlined />} onClick={() => setOpenCancel(true)}>
               取消订单
               <MyModal
@@ -307,7 +309,7 @@ const OrderInfo: FC = () => {
             ''
           ),
 
-          data?.state === -1 ? (
+          data?.orderDTO.state === -1 ? (
             <Button
               key={11}
               icon={<DeleteOutlined />}
@@ -315,7 +317,7 @@ const OrderInfo: FC = () => {
                 try {
                   const response = await request<{
                     data: number;
-                  }>('/api/order/delete', {
+                  }>('/api/order/status/delete', {
                     params: { orderId },
                   });
                   if (response.data) {
@@ -329,7 +331,7 @@ const OrderInfo: FC = () => {
                 }
               }}
             >
-              删除商品
+              删除订单
             </Button>
           ) : (
             ''
@@ -341,27 +343,27 @@ const OrderInfo: FC = () => {
           <Card title="订单进度" style={{ marginBottom: 24 }}>
             <RouteContext.Consumer>
               {({ isMobile }) =>
-                data?.state ? (
-                  data.state === -1 ? (
+                data?.orderDTO.state !== undefined ? (
+                  data.orderDTO.state === -1 ? (
                     <b style={{ fontSize: 'large' }}>订单已取消</b>
-                  ) : data.state <= 3 ? (
+                  ) : data.orderDTO.state <= 3 ? (
                     <Steps
                       direction={isMobile ? 'vertical' : 'horizontal'}
                       progressDot={customDot}
-                      current={data?.state}
+                      current={data?.orderDTO.state}
                     >
                       <Step title="已下单 " />
                       <Step title="已发货 " />
                       <Step title="已签收 " />
                       <Step title="已评价 " />
                     </Steps>
-                  ) : data.state == 4 ? (
+                  ) : data.orderDTO.state == 4 ? (
                     <b style={{ fontSize: 'large', textAlign: 'center' }}>协商中</b>
-                  ) : data.state == 5 ? (
+                  ) : data.orderDTO.state == 5 ? (
                     <b style={{ fontSize: 'large', textAlign: 'center' }}>售后结束</b>
-                  ) : data.state == 6 ? (
+                  ) : data.orderDTO.state == 6 ? (
                     <b style={{ fontSize: 'large', textAlign: 'center' }}>协商失败</b>
-                  ) : data.state == 6 ? (
+                  ) : data.orderDTO.state == 7 ? (
                     <b style={{ fontSize: 'large', textAlign: 'center' }}>仲裁中</b>
                   ) : (
                     ''
@@ -408,27 +410,60 @@ const OrderInfo: FC = () => {
       )}
       <Card>
         <Descriptions title="订单信息" style={{ marginBottom: 32 }}>
-          <Descriptions.Item label="订单号">{data?.id}</Descriptions.Item>
-          <Descriptions.Item label="收货人姓名">{data?.name}</Descriptions.Item>
-          <Descriptions.Item label="收货人电话">{data?.tel}</Descriptions.Item>
-          <Descriptions.Item label="卖家姓名">
-            <div>
-              <Avatar
-                size="small"
-                className={styles.avatar}
-                src={data?.item.ownerUrl}
-                alt="avatar"
-              />
-              <span style={{ marginLeft: '10px' }}>{data?.item.ownerName}</span>
-            </div>
-          </Descriptions.Item>
-          <Descriptions.Item label="下单时间">{data?.createTime} </Descriptions.Item>
-          <Descriptions.Item label="交付时间">{data?.deliveryTime}</Descriptions.Item>
-          <Descriptions.Item label="支付方式">{data?.payment}</Descriptions.Item>
-          <Descriptions.Item label="交易地点">{data?.position}</Descriptions.Item>
-          <Descriptions.Item label="订单备注">{data?.remark}</Descriptions.Item>
+          <Descriptions.Item label="订单号">{data?.orderDTO.id}</Descriptions.Item>
+          <Descriptions.Item label="收货人姓名">{data?.orderDTO.name}</Descriptions.Item>
+          <Descriptions.Item label="收货人电话">{data?.orderDTO.tel}</Descriptions.Item>
+          <Descriptions.Item label="下单时间">{data?.orderDTO.createTime} </Descriptions.Item>
+          <Descriptions.Item label="交付时间">{data?.orderDTO.deliveryTime}</Descriptions.Item>
+          <Descriptions.Item label="交付方式">{data?.orderDTO.delivery}</Descriptions.Item>
+          <Descriptions.Item label="支付方式">{data?.orderDTO.payment}</Descriptions.Item>
+          <Descriptions.Item label="交易地点">{data?.orderDTO.position}</Descriptions.Item>
+          <Descriptions.Item label="订单备注">{data?.orderDTO.remark}</Descriptions.Item>
         </Descriptions>
         <Divider style={{ marginBottom: 32 }} />
+
+        {data && data?.orderDTO.message.length != 0 ? (
+          <div>
+            <Descriptions title="订单状态信息" style={{ marginBottom: 32 }}>
+              {data.orderDTO.imgUrl !== null ? (
+                <Descriptions.Item label="发货照片">
+                  <Image width={200} src={data.orderDTO.imgUrl}></Image>
+                </Descriptions.Item>
+              ) : (
+                ''
+              )}
+              <Descriptions.Item label="当前状态">
+                {data.orderDTO.state == -1
+                  ? '已取消'
+                  : data.orderDTO.state == 0
+                  ? '已下单'
+                  : data.orderDTO.state == 1
+                  ? '已发货'
+                  : data.orderDTO.state == 2
+                  ? '已签收'
+                  : data.orderDTO.state == 3
+                  ? '已评价'
+                  : data.orderDTO.state == 4
+                  ? '协商中'
+                  : data.orderDTO.state == 5
+                  ? '售后结束'
+                  : data.orderDTO.state == 6
+                  ? '协商失败'
+                  : data.orderDTO.state == 7
+                  ? '仲裁中'
+                  : '无效'}
+              </Descriptions.Item>
+              {Object.entries(data.orderDTO.message).map(([key, value]) => (
+                <Descriptions.Item key={key} label={key}>
+                  {value}
+                </Descriptions.Item>
+              ))}
+            </Descriptions>
+            <Divider style={{ marginBottom: 32 }} />
+          </div>
+        ) : (
+          ''
+        )}
 
         {data?.buyer.id ? (
           data.buyer.id == initialState?.currentUser?.id ? (
@@ -470,7 +505,7 @@ const OrderInfo: FC = () => {
                     <Avatar
                       size="small"
                       className={styles.avatar}
-                      src={data?.seller.imgUrl}
+                      src={data?.buyer.imgUrl}
                       alt="avatar"
                     />
                     <span style={{ marginLeft: '10px' }}>{data?.buyer.nickName}</span>
@@ -498,29 +533,14 @@ const OrderInfo: FC = () => {
           ''
         )}
         <Descriptions title="商品信息" style={{ marginBottom: 32 }}>
-          <Descriptions.Item label="商品名称">{data?.item.itemName}</Descriptions.Item>
-          <Descriptions.Item label="商品描述">{data?.item.description}</Descriptions.Item>
-          <Descriptions.Item label="商品价格">¥ {data?.item.price}</Descriptions.Item>
+          <Descriptions.Item label="商品名称">{data?.orderDTO.item.itemName}</Descriptions.Item>
+          <Descriptions.Item label="商品描述">{data?.orderDTO.item.description}</Descriptions.Item>
+          <Descriptions.Item label="商品价格">¥ {data?.orderDTO.item.price}</Descriptions.Item>
           <Descriptions.Item label="商品图片">
-            <Image width={200} src={data?.item.imgUrl} />
+            <Image width={200} src={data?.orderDTO.item.imgUrl} />
           </Descriptions.Item>
         </Descriptions>
         <Divider style={{ marginBottom: 32 }} />
-
-        {data?.messages ? (
-          <div>
-            <Descriptions>
-              {Object.entries(data.messages).map(([key, value]) => (
-                <Descriptions.Item key={key} label={key}>
-                  {value}
-                </Descriptions.Item>
-              ))}
-            </Descriptions>
-            <Divider style={{ marginBottom: 32 }} />
-          </div>
-        ) : (
-          ''
-        )}
       </Card>
     </PageContainer>
   );

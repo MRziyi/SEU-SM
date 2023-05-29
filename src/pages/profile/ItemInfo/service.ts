@@ -12,6 +12,6 @@ export async function queryItemInfo(itemIdPara: any): Promise<{
     headers: {
       'Content-Type': 'application/json',
     },
-    data: itemIdPara,
+    data: { itemId: itemIdPara },
   });
 }

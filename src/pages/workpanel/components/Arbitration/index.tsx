@@ -1,11 +1,9 @@
-import { useRequest } from 'umi';
-import { Avatar, Card, List, Rate } from 'antd';
+import { Link, useRequest } from 'umi';
+import { Avatar, Card, Descriptions, List, Rate } from 'antd';
 import React, { useState } from 'react';
-import type { CommentData } from '../../data';
-import { queryCommentList } from '../../service';
+import type { OrderData } from '../../data';
+import { queryArbiList } from '../../service';
 import stylesApplications from './index.less';
-
-const desc = ['极差', '差劲', '一般', '不错', '极好'];
 
 export function formatWan(val: number) {
   const v = val * 1;
@@ -38,13 +36,13 @@ function showTotal(total: number, range: [number, number]) {
 const Arbitration: React.FC = () => {
   const [pageSize, setPageSize] = useState<number>(4);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [listData, setListData] = useState<CommentData[]>([]);
+  const [listData, setListData] = useState<OrderData[]>([]);
   const [totalNum, setTotalNum] = useState<number>(0);
 
   // 获取tab列表数据
   const { loading } = useRequest(
     () => {
-      return queryCommentList();
+      return queryArbiList();
     },
     {
       onSuccess: (result) => {
@@ -71,36 +69,34 @@ const Arbitration: React.FC = () => {
   }
 
   return (
-    <List<CommentData>
-      rowKey="commentId"
+    <List<OrderData>
+      rowKey="id"
       loading={loading}
       className={stylesApplications.filterCardList}
-      grid={{ gutter: 24, xxl: 3, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
+      grid={{ gutter: 24, xxl: 3, xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }}
       dataSource={listData}
       pagination={paginationProps}
       renderItem={(item) => (
-        <List.Item key={item.commentId}>
-          <Card hoverable bodyStyle={{ paddingBottom: 20 }}>
-            <Card.Meta
-              avatar={<Avatar size="small" src={item.fromUserUrl} />}
-              title={item.fromUserName}
-            />
-            <div className={stylesApplications.cardInfo}>
-              <div>
-                <p>评价：</p>
-                <p>{item.content}</p>
+        <List.Item key={item.id}>
+          <Link to={`/profile/order-info/${item.id}`}>
+            <Card hoverable bodyStyle={{ paddingBottom: 20 }}>
+              <Card.Meta avatar={<Avatar size="large" src={item.imgUrl} />} title={item.name} />
+              <div className={stylesApplications.cardInfo}>
+                <div>
+                  <p>协商记录：</p>
+                  <div>
+                    <Descriptions title="订单状态信息" style={{ marginBottom: 32 }}>
+                      {Object.entries(item.message).map(([key, value]) => (
+                        <Descriptions.Item key={key} label={key}>
+                          {value}
+                        </Descriptions.Item>
+                      ))}
+                    </Descriptions>
+                  </div>
+                </div>
               </div>
-              <div style={{ textAlign: 'right' }}>
-                <p>
-                  评分：
-                  {item.rank ? <span className="ant-rate-text">{desc[item.rank - 1]}</span> : ''}
-                </p>
-                <span>
-                  <Rate tooltips={desc} disabled value={item.rank} />
-                </span>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          </Link>
         </List.Item>
       )}
     />
