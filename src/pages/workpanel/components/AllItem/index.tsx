@@ -62,8 +62,8 @@ const AllItem: React.FC = () => {
       pagination={paginationProps}
       dataSource={listData}
       renderItem={(item) => (
-        <Link to={`/profile/item-info/${item.itemId}`}>
-          <List.Item>
+        <List.Item>
+          <Link to={`/profile/item-info/${item.itemId}`}>
             <Card
               className={styles.card}
               hoverable
@@ -96,8 +96,8 @@ const AllItem: React.FC = () => {
                 </div>
               </div>
             </Card>
-          </List.Item>
-        </Link>
+          </Link>
+        </List.Item>
       )}
     />
   );
